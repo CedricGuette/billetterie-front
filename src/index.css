@@ -12,6 +12,23 @@ code {
     monospace;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin : 15vh;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+header form{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
 .App {
   text-align: center;
 }

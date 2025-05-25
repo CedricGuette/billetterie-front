@@ -50,7 +50,7 @@ const Login = () => {
                 if (data.token) {
                     const object = { value : data.token, timestamp : new Date().getTime()}
                     localStorage.setItem("SESSION", JSON.stringify(object));
-                    setSession(!session);
+                    setSession(true);
                     setLoggedIn(true);
                 } else {
                     throw new Error("Erreur lors de la connexion, veuillez réessayer.");

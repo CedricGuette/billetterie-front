@@ -44,7 +44,7 @@ const ModeratorProfile = () => {
     const handleClick = () => {
     localStorage.removeItem('SESSION');
     setLevel("ROLE_UNKNOWN");
-    setSession(!session);
+    setSession(false);
     setLoggedOut(true);
     }
 

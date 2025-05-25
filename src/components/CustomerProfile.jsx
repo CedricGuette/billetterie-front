@@ -45,7 +45,7 @@ const CustomerProfile = () => {
 
     const handleClick = () => {
         localStorage.removeItem('SESSION');
-        setSession(!session);
+        setSession(false);
         setLevel("ROLE_UNKNOWN");
         setLoggedOut(true);
     }

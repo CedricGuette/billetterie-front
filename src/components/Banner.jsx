@@ -13,14 +13,14 @@ function Banner() {
     const handleClick = () => {
     localStorage.removeItem('SESSION');
     setLevel("ROLE_UNKNOWN");
-    setSession(!session);
+    setSession(false);
     }
 
     return (
         <header className="App-header">
             <span>Billetterie pour les Jeux Olympiques de 2024 de Paris</span>
             <nav>
-                {level !== "ROLE_UNKNOWN" ? <Link to="/" onClick={handleClick}>Logout</Link> : <Login />}
+                {session ? <Link to="/" onClick={handleClick}>Logout</Link> : <Login />}
             </nav>
         </header>
     );
