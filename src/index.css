@@ -12,22 +12,243 @@ code {
     monospace;
 }
 
+header {
+  width: 100%;
+  background-color: #282c34;
+  padding: 10px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+header form{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+  font-size: 1.2rem;
+  border: 2px solid white;
+  padding: 10px 10px 10px 0px;
+  border-radius: 15px;
+}
+
+header form button {
+  margin-left: 15px;
+  margin-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  border-radius: 10px;
+  border : 2px solid white;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #282c34;
+  cursor: pointer;
+}
+
+header form button:hover {
+  background-color: white;
+  color: black;
+}
+
+header form input {
+  height: 25px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+}
+
+header .logout-button {
+  padding: 10px;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid white;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #282c34;
+  text-decoration: none;
+}
+
+header .logout-button:hover {
+  background-color: white;
+  color: black;
+}
+
+header .title {
+  margin: 0 0 40px 0;
+  font-size: 1rem;
+  width: 80%;
+  text-align: center;
+}
+
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin : 15vh;
-  min-height: 100vh;
+  width: 100%;
   padding: 20px;
 }
 
-header form{
+.ticket-shop {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  border-radius: 15px;
 }
 
+.ticket-shop form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  max-width: 400px;
+  border: 2px solid #282c34;
+  padding-left: 60px;
+  padding-right: 60px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+}
+
+.ticket-shop form div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.ticket-shop form label {
+  font-size: 1.2rem;
+}
+
+.ticket-shop form select {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid #282c34;
+  padding-bottom: 2%;
+  padding-top: 2%;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  cursor: pointer;
+}
+
+.ticket-shop form button {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid #282c34;
+  background-color: #282c34;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.ticket-shop form button:hover {
+  background-color: white;
+  color: black;
+}
+
+.customer-register-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  max-width: 400px;
+  border: 2px solid #282c34;
+  padding-left: 60px;
+  padding-right: 60px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+}
+
+.customer-register-form div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.customer-register-form label {
+  font-size: 1.2rem;
+}
+
+.customer-register-form input {
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  border: 2px solid #282c34;
+  padding-bottom: 2%;
+  padding-top: 2%;
+  font-size: 1.2rem;
+}
+
+.customer-register-form input:focus {
+  outline: none;
+  border-color: royalblue;
+}
+
+.customer-register-form .file-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  padding: 2%;
+  font-size: 1.2rem;
+
+}
+
+.customer-register-form .file-input::file-selector-button {
+  height: 40px;
+  width: 40%;
+  border-radius: 10px;
+  border: 2px solid black;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #282c34;
+  cursor: pointer;
+}
+
+.customer-register-form .file-input::file-selector-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.customer-register-form .file-input-info {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.customer-register-form button {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid black;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #282c34;
+  cursor: pointer;
+}
+
+.go-back-button {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.2rem;
+  background-color: white;
+}
+
+.go-back-button:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 .App {
   text-align: center;
@@ -42,17 +263,6 @@ header form{
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {

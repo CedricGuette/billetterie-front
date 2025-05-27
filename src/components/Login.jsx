@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthLevelContext } from './AuthLevelProvider';
 
-// On met en place un formulaire de connexion
+/**
+ * Composant Login pour la connexion des utilisateurs.
+ * 
+ * @returns {JSX.Element} Le formulaire de connexion.
+ * @description Ce composant gère la connexion des utilisateurs en collectant les informations nécessaires et en les envoyant à l'API.
+ */
 const Login = () => {
     const [form, setForm] = useState({
         username: "",
@@ -12,7 +17,7 @@ const Login = () => {
     });
 
     // On met en place le contexte pour le niveau d'authentifications    
-    const { session, setSession } = useContext(AuthLevelContext);
+    const { setSession } = useContext(AuthLevelContext);
 
 
     // On prépare le format de la requête pour l'API
@@ -31,13 +36,13 @@ const Login = () => {
         if (LoggedIn){
             return navigate("/");
         }
-    },[LoggedIn]);
+    },[LoggedIn, navigate]);
 
     // On met en place la fonction de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/auth/login", {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

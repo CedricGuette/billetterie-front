@@ -3,6 +3,15 @@ import React, { useState } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 
+/**
+ * Composant Checkout qui gère le processus de paiement avec PayPal.
+ * 
+ * @param {Object} props - Les propriétés du composant.
+ * @param {number} props.price - Le prix du billet à payer.
+ * @param {string} props.ticketIdString - L'identifiant du billet sous forme de chaîne.
+ * @param {number} props.ticketId - L'identifiant du billet sous forme numérique.
+ * @returns {JSX.Element} Le composant Checkout.
+ */
 const Checkout = ({ price , ticketIdString, ticketId }) => {
     const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
     const [currency, setCurrency] = useState(options.currency);
@@ -35,9 +44,8 @@ const Checkout = ({ price , ticketIdString, ticketId }) => {
     const onApproveOrder = (data,actions) => {
         return actions.order.capture().then((details) => {
 
-            const name = details.payer.name.given_name;
             try {
-            const response = fetch("http://localhost:8080/api/tickets/" + ticketId, {
+            const response = fetch(`${process.env.REACT_APP_BACKEND_URL}/api/tickets/` + ticketId, {
                 method: "PATCH",
                 headers: {
                  

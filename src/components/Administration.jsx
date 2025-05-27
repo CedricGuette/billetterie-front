@@ -6,23 +6,22 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';       
 import CreateModerator from './CreateModerator';
 import CreateSecurity from './CreateSecurity';
-import CreateAdmin from './CreateAdmin';
 
 const Administration = () => {
 
-    const { session, setSession } = useContext(AuthLevelContext);
-    const { level, setLevel } = useContext(AuthLevelContext);
+    const { setSession } = useContext(AuthLevelContext);
+    const { setLevel } = useContext(AuthLevelContext);
 
     // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
 
-    const [LoggedOut, setLoggedOut] = useState(false);
+    const [LoggedOut] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (LoggedOut){
             return navigate("/");
         }
-    },[LoggedOut]);
+    },[LoggedOut, navigate]);
 
     const handleClick = () => {
     localStorage.removeItem('SESSION');

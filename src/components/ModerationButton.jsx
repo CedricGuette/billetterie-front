@@ -1,29 +1,25 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { ModeratorContext } from "./ModeratorProvider";
 
+
+/** * Composant pour valider la pièce d'identité d'un utilisateur.
+ * 
+ * @param {string} id - L'identifiant de l'utilisateur dont la pièce d'identité doit être validée 
+ * @returns envoie une requête PATCH à l'API pour mettre à jour l'état de la pièce d'identité.
+ */
  function MederationButton({id}) {
 
-    // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
-    const [deletedElement, setdeletedElement] = useState(false);
-    const navigate = useNavigate();
+    // On utilise le contexte ModeratorContext pour accéder à la fonction setDeleted
+    const { setDeleted } = useContext(ModeratorContext);
 
-    useEffect(() => {
-        if (deletedElement){
-            return navigate("/");
-        }
-    },[deletedElement]);
+    // On crée un objet vide pour le corps de la requête PATCH
+    const customer = JSON.stringify({});
 
-    const customer = JSON.stringify(
-    {
-    
-    }
-    );
-
+    // Fonction pour envoyer une requête PATCH à l'API pour mettre à jour l'état de la pièce d'identité
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/moderators/" + id ,{
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/moderators/` + id ,{
                 method: "PATCH",
                 headers : { 
                     "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
@@ -33,7 +29,7 @@ import { useNavigate } from "react-router-dom";
             })
             .then((res) => {
                 if (res.ok) {
-                    deletedElement(true);
+                    setDeleted(true);
                 }
             })
             if (!response.ok) {

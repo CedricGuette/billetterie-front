@@ -2,33 +2,38 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+/** Composant pour supprimer un utilisateur.
+ * @param {string} id - L'identifiant de l'utilisateur à supprimer.
+ * @returns envoie une requête DELETE à l'API pour supprimer l'utilisateur.
+ * @description Ce composant permet de supprimer un utilisateur en envoyant une requête DELETE à l'API.
+ */
  function DeleteUserButton({id}) {
 
     // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
     const [deletedElement, setdeletedElement] = useState(false);
     const navigate = useNavigate();
 
+    // Si l'utilisateur a été supprimé, on le redirige vers la page d'accueil
     useEffect(() => {
         if (deletedElement){
             return navigate("/");
         }
-    },[deletedElement]);
+    },[deletedElement, navigate]);
 
-    const customer = JSON.stringify(
-    {
-    
-    }
-    );
+    // On crée un objet vide pour le corps de la requête
+    const customer = JSON.stringify({});
 
+    // Fonction pour envoyer une requête DELETE à l'API pour supprimer l'utilisateur
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/admin/users" + id ,{
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/users` + id ,{
                 method: "DELETE",
                 headers : { 
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
                 },
+                
                 body: customer
                 
             })

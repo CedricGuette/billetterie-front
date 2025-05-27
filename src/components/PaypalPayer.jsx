@@ -1,23 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import Checkout from "./Checkout";
 import { useParams } from "react-router-dom";
 
 
 const initialOptions = {
-  "client-id": "AdUTDsa7kUYMW2Ezy54frYy71PaRtrTuyAmZi8mQxLs9SjVgMeEOdgmXjPAi9ZF44ef7arG1p3nOkDgb",
+  "client-id": `${process.env.REACT_APP_PAYPAL_CLIENT_ID}`,
   currency: "Euro",
   intent: "capture",
 };
 
+/**
+ * Composant PaypalPayer pour gérer le paiement via PayPal.
+ * 
+ * @returns {JSX.Element} Le composant de paiement PayPal.
+ * @description Ce composant récupère le prix du panier d'un utilisateur et l'affiche dans le composant Checkout pour le paiement via PayPal.
+ */
 const PaypalPayer = () => {
 
   const { ticket } = useParams();
   const [data, setUser] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [setLoading] = React.useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/customers/cartprice/" + ticket,
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/customers/cartprice/` + ticket,
             {
             method : "GET",
             headers : { 
@@ -30,7 +36,7 @@ const PaypalPayer = () => {
             setLoading(false);
         })
         .catch(() => setLoading(false));
-}, []);
+}, [setLoading, ticket]);
 
     return (
         <div>       

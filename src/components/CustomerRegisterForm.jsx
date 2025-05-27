@@ -1,22 +1,16 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthLevelContext } from "./AuthLevelProvider";
-import { useContext } from 'react';
+import React, { useState, useContext } from "react";
+import { RegisterContext } from "./RegisterProvider";
 
+/**
+ * Composant pour enregistrer un nouveau client.  
+ * @param {Object} props - Les propriétés du composant, notamment le choix de l'utilisateur pour le nombre de tickets.
+ * @returns {JSX.Element} Le formulaire d'enregistrement du client.
+ * @description Ce composant gère l'enregistrement d'un nouveau client en collectant les informations nécessaires et en les envoyant à l'API.
+ */
+const CustomerRegisterForm = (props) => {
 
-const CustomerRegisterForm = () => {
-
-    // On met en place les éléments pour la redirection
-    const [sent, setSent] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (sent){
-            return navigate("/login");
-        }
-    },[sent]);
-
+    // On met en place les éléments pour après la validation du formulaire
+    const { setSent } = useContext(RegisterContext);
 
     // On importe le composant React et useState pour gérer l'état du formulaire
     const [form, setForm] = useState({
@@ -29,8 +23,7 @@ const CustomerRegisterForm = () => {
         photo: null,
     });
 
-    // On récupère le choix de l'utilisateur depuis le localStorage et on prépare le format de la requête pour l'API
-    const choice = localStorage.getItem("TICKET_CHOICE");
+    // On récupère le choix de l'utilisateur et on prépare le format de la requête pour l'API
     const customer = JSON.stringify(
         {
             firstName: `${form.firstName}`,
@@ -41,11 +34,12 @@ const CustomerRegisterForm = () => {
             tickets: [
                 {
                 eventCode: "1",
-                howManyTickets: choice
+                howManyTickets: props.choice
                 }
             ]
         }
     );
+    
     // On crée un objet Blob pour le fichier photo
     const blob = new Blob([customer], { type: "application/json" });
     const formData = new FormData();
@@ -56,7 +50,7 @@ const CustomerRegisterForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/auth/register", {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
                 method: "POST",
                 headers: {
                  
@@ -66,7 +60,6 @@ const CustomerRegisterForm = () => {
             })
             .then((res) => {
                 if (res.ok) {
-                    localStorage.removeItem("TICKET_CHOICE");
                     setSent(true);
             }
             if (!response.ok) {
@@ -88,7 +81,7 @@ const CustomerRegisterForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="customer-register-form">
             <div>
                 <label>
                     Prénom:
@@ -167,9 +160,13 @@ const CustomerRegisterForm = () => {
                     <input
                         type="file"
                         name="photo"
-                        accept="image/*"
+                        accept="image/jpeg, image/png, image/jpg"
                         onChange={handleChange}
+                        className="file-input"
+                        required
                     />
+                <div className="file-input-info">Formats acceptés: JPEG, PNG, JPG </div>
+                <div className="file-input-info">Taille maximale: 2 Mo</div>
                 </label>
             </div>
             <button type="submit">Réservez vos tickets</button>

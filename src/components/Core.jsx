@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import TicketShop from './TicketShop';
 import CustomerProfile from './CustomerProfile';
 import ModeratorProfile from './ModeratorProfile';
@@ -7,11 +6,16 @@ import Administration from './Administration';
 import ValidateQr from './ValidateQr';
 import { useContext } from 'react';
 import { AuthLevelContext } from './AuthLevelProvider';
+import RegisterProvider from './RegisterProvider';
 
+/** Composant Core qui affiche le contenu principal de l'application en fonction du niveau d'authentification de l'utilisateur.
+ * 
+ * @returns {JSX.Element} Le composant Core.
+ */
 const Core = () => {
     
 
-    const { level, setLevel } = useContext(AuthLevelContext);
+    const { level } = useContext(AuthLevelContext);
 
                 switch (level) {
                 case "ROLE_USER":
@@ -23,7 +27,12 @@ const Core = () => {
                 case "ROLE_ADMIN":
                     return <Administration />;
                 default:
-                    return <TicketShop />;}
+                    return (
+                        <RegisterProvider>
+                            <TicketShop />
+                        </RegisterProvider>)
+                        }
+                        
 };
 
 export default Core;

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
+/** Composant CreateAdmin qui permet de créer un nouvel administrateur.
+ * 
+ * @returns {JSX.Element} Le formulaire pour créer un administrateur.
+ */
 const CreateAdmin = () => {
     const [form, setForm] = useState({
         username: "",
         password: "",
     });
 
-
+    // Préparation des données pour l'envoi au backend
     const moderator = JSON.stringify(
         {
             username: `${form.username}`,
@@ -14,12 +18,14 @@ const CreateAdmin = () => {
         }
     );
 
+    // State pour indiquer si le formulaire a été envoyé avec succès
     const [sent, setSent] = useState(false);
 
+    // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/auth/createAdmin", {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/createAdmin`, {
                 method: "POST",
                 headers : { 
                     "Content-Type": "application/json",
@@ -39,6 +45,7 @@ const CreateAdmin = () => {
         }
     };
 
+    // Fonction pour gérer les changements dans les champs du formulaire
         const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({

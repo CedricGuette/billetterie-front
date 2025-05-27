@@ -4,19 +4,23 @@ import { AuthLevelContext } from './AuthLevelProvider';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
+/** Composant CustomerProfile qui affiche le profil de l'utilisateur connecté et ses tickets.
+ * @returns {JSX.Element} Le composant CustomerProfile.
+ * @description Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. 
+ * Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
+ */
 const CustomerProfile = () => {
     
+    // On initialise le state pour stocker les informations de l'utilisateur et les tickets
     const [user, setUser] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [tickets, setTickets] = useState([])
-    const { session, setSession } = useContext(AuthLevelContext);
-    const { level, setLevel } = useContext(AuthLevelContext);
+    const { setSession } = useContext(AuthLevelContext);
+    const { setLevel } = useContext(AuthLevelContext);
     const url = "/pay/";
 
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/customers",
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/customers`,
                 {
                 method : "GET",
                 headers : { 
@@ -27,9 +31,10 @@ const CustomerProfile = () => {
             .then((data) => {
                 setUser(data)
                 setTickets(data.tickets);
-                setLoading(false);
             })
-            .catch(() => setLoading(false));
+            .catch((error) => {
+                console.error("Erreur lors de la récupération des données utilisateur :", error);
+            });
     }, []);
 
     // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
@@ -40,7 +45,7 @@ const CustomerProfile = () => {
         if (LoggedOut){
             return navigate("/");
         }
-    },[LoggedOut]);
+    },[LoggedOut, navigate]);
     
 
     const handleClick = () => {
@@ -49,8 +54,6 @@ const CustomerProfile = () => {
         setLevel("ROLE_UNKNOWN");
         setLoggedOut(true);
     }
-
-    if (loading) return <div>Loading...</div>;
 
     return (
         <div>
@@ -72,7 +75,7 @@ const CustomerProfile = () => {
                     <li key={ticket.id}>
                         <strong>
                         {ticket.howManyTickets} tickets 
-                        {ticket.ticketIsPayed ? <a href= {`http://localhost:8080/${ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
+                        {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
                         {user.profileIsValidate && !ticket.ticketIsPayed ? ( <Link to={ url + ticket.id }> Procéder au paiement</Link>) : "" }
 
                         </strong>

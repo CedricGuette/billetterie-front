@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 
+/**
+ * Composant ValidateQr pour valider un QR code.
+ * @returns {JSX.Element} Le formulaire de validation du QR code.
+ * @description Ce composant permet à l'utilisateur d'entrer un QR code et de le valider en envoyant une requête au backend.
+ */
 const ValidateQr = () => {
     const [qrCode, setQrCode] = useState('');
     const [response, setResponse] = useState(null);
     
+    // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("http://localhost:8080/api/security/" + qrCode, {
+            await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/security/` + qrCode, {
                 method: "GET",
                 headers: { 
                     "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,

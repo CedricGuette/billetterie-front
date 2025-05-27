@@ -1,17 +1,23 @@
-import React, { children, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createContext } from 'react';
 
 
 export const AuthLevelContext = createContext();
+/** Composant AuthLevelProvider qui fournit le niveau d'authentification de l'utilisateur et gère la session.
+ * 
+ * @param {Object} children - Les composants enfants qui auront accès au contexte d'authentification.
+ * @returns {JSX.Element} Le fournisseur de contexte AuthLevelContext.      
+ */
 export const AuthLevelProvider = ({ children }) => {
 
     const [level, setLevel] = useState(["ROLE_UNKNOWN"]);
     const [session, setSession] = useState(false);
 
+    // Vérifie si une session existe dans le localStorage et met à jour le niveau d'authentification
     useEffect(() => {
 
     if(localStorage.getItem('SESSION') !== null) {
-        fetch("http://localhost:8080/api/auth/level",
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/level`,
                 {
                 method : "GET",
                 headers : { 
