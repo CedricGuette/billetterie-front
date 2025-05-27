@@ -10,8 +10,10 @@ export const AuthLevelContext = createContext();
  */
 export const AuthLevelProvider = ({ children }) => {
 
+    const sessionIsOpen = localStorage.getItem('SESSION') !== null;
+
     const [level, setLevel] = useState(["ROLE_UNKNOWN"]);
-    const [session, setSession] = useState(false);
+    const [session, setSession] = useState(sessionIsOpen);
 
     // Vérifie si une session existe dans le localStorage et met à jour le niveau d'authentification
     useEffect(() => {

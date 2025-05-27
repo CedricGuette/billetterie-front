@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthLevelContext } from './AuthLevelProvider';
 import Login from './Login';
+import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
 /**
  * Composant Banner qui affiche le titre de l'application et un lien de déconnexion ou de connexion.

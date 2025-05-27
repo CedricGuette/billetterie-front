@@ -1,6 +1,6 @@
 
 import { useContext } from 'react';
-import { ModeratorContext } from './ModeratorProvider';
+import { ModeratorContext } from '../../contexts/ModeratorProvider';
 import ModerationButton from './ModerationButton';
 
 const VerificationPhotoItem = ({ id, url }) => {

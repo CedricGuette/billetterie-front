@@ -1,12 +1,12 @@
 import React from 'react';
-import TicketShop from './TicketShop';
-import CustomerProfile from './CustomerProfile';
+import { useContext } from 'react';
+import TicketShop from '../components/TicketShop';
 import ModeratorProfile from './ModeratorProfile';
+import CustomerProfile from './CustomerProfile';
 import Administration from './Administration';
 import ValidateQr from './ValidateQr';
-import { useContext } from 'react';
-import { AuthLevelContext } from './AuthLevelProvider';
-import RegisterProvider from './RegisterProvider';
+import { AuthLevelContext } from '../contexts/AuthLevelProvider';
+import { RegisterProvider } from '../contexts/RegisterProvider';
 
 /** Composant Core qui affiche le contenu principal de l'application en fonction du niveau d'authentification de l'utilisateur.
  * 

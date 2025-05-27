@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { AuthLevelContext } from './AuthLevelProvider';
+import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
 /**
  * Composant Login pour la connexion des utilisateurs.

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ValidationPhotoItem from './VerificationPhotoItem';
-import ModeratorProvider from './ModeratorProvider';
+import ValidationPhotoItem from '../components/moderator/VerificationPhotoItem';
+import ModeratorProvider from '../contexts/ModeratorProvider';
 
 const ModeratorProfile = () => {
     const [photos, setUser] = useState([]);

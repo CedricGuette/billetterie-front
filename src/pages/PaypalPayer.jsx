@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import Checkout from "./Checkout";
+import Checkout from "../components/paypal/Checkout";
 import { useParams } from "react-router-dom";
 
 

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ModeratorContext } from "./ModeratorProvider";
+import { ModeratorContext } from "../../contexts/ModeratorProvider";
 
 
 /** * Composant pour valider la pièce d'identité d'un utilisateur.

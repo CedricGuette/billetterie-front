@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthLevelContext } from './AuthLevelProvider';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
 /** Composant CustomerProfile qui affiche le profil de l'utilisateur connecté et ses tickets.
  * @returns {JSX.Element} Le composant CustomerProfile.

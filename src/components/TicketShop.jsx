@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import CustomerRegisterForm from "./CustomerRegisterForm";
-import { RegisterContext } from "./RegisterProvider";
+import { RegisterContext } from "../contexts/RegisterProvider";
 
 /**
  * Composant TicketShop pour gérer la sélection et l'enregistrement des tickets.

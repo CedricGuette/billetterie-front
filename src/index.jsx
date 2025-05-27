@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Core from './components/Core';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Banner from './components/Banner';
-import PaypalPayer from './components/PaypalPayer';
-import CreateAdmin from './components/CreateAdmin';
-import AuthLevelProvider from './components/AuthLevelProvider';
-import UsersList from './components/UsersList';
+import PaypalPayer from './pages/PaypalPayer';
+import CreateAdmin from './components/admin/CreateAdmin';
+import UsersList from './components/admin/UsersList';
+import Core from './pages/Core';
+import AuthLevelProvider from './contexts/AuthLevelProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

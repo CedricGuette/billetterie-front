@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { RegisterContext } from "./RegisterProvider";
+import { RegisterContext } from "../contexts/RegisterProvider";
 
 /**
  * Composant pour enregistrer un nouveau client.  
