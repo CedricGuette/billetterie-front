@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 nav {
   width: 15%;
 }
@@ -272,6 +281,184 @@ main {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.tickets-cell:hover {
+  cursor:help;
+}
+
+.info-tickets {
+  display: block;
+  background-color: white;
+  position: absolute;
+  right:10%;
+}
+
+.admin-user-list {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.admin-user-list .user-type{
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.admin-user-list .user-type span{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.admin-user-list .user-type span:hover{
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 10px;
+}
+
+.user-type table, th, td {
+  
+  padding: 5px;
+  text-align: center;
+  border-spacing: 0px;
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0px;
+
+}
+
+thead {
+ background-color: #282c34;
+ color: white;
+}
+
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-panel {
+  list-style-type: none;
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  justify-content: space-around;
+}
+
+.user-list-table {
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 0 30px 30px 30px;
+  margin-top: 15px;
+}
+
+.create-panel {
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 0 30px 30px 30px;
+  margin-top: 15px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.create-panel label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-panel label {
+  font-size: 1.2rem;
+}
+
+.create-panel input:focus {
+  outline: none;
+  border-color: royalblue;
+}
+
+.create-panel input {
+  width: 95%;
+  height: 20px;
+  border-radius: 10px;
+  border: 2px solid #282c34;
+  padding-bottom: 2%;
+  padding-top: 2%;
+  font-size: 1.2rem;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+}
+
+.create-panel button {
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid black;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #282c34;
+  cursor: pointer;
+}
+
+.toggle-div {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.toggle-div .create-type {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+  margin: 10px;
+}
+
+.toggle-switch .toggle-input {
+  display: none;
+}
+
+.toggle-switch .toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 24px;
+  background-color: #2196F3;
+  border-radius: 34px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-switch .toggle-label::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s;
+}
+
+.toggle-switch .toggle-input:checked + .toggle-label::before {
+  transform: translateX(16px);
+}
+
 
 .App {
   text-align: center;

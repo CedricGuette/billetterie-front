@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Banner from './components/Banner';
 import PaypalPayer from './pages/PaypalPayer';
 import CreateAdmin from './components/admin/CreateAdmin';
-import UsersList from './components/admin/UsersList';
+import UsersList from './pages/UsersList';
 import Core from './pages/Core';
 import AuthLevelProvider from './contexts/AuthLevelProvider';
 
