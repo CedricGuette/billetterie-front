@@ -5,7 +5,7 @@ import CreateSecurity from './CreateSecurity';
 import { AuthLevelContext } from '../../contexts/AuthLevelProvider';
 import { AdminPageContext } from '../../contexts/AdminPageProvider';
 
-/**Composant pour créer un modérateur ou un agent de sécurité
+/**Composant pour créer un modérateur ou un agent de sécurité.
  * @returns {JSX.Element} Un formulaire pour créer un modérateur ou un agent de sécurité.
  */
 const CreateUser = () => {

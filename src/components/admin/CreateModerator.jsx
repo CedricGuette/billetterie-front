@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 /** Composant CreateModerator qui permet de créer un nouveau moderateur.
- * 
  * @returns {JSX.Element} Le formulaire pour créer un moderateur.
  */
 const CreateModerator = () => {

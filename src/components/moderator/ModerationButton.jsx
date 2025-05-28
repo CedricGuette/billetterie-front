@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import { ModeratorContext } from "../../contexts/ModeratorProvider";
 
 
-/** * Composant pour valider la pièce d'identité d'un utilisateur.
- * 
+/** Composant pour valider la pièce d'identité d'un utilisateur.
  * @param {string} id - L'identifiant de l'utilisateur dont la pièce d'identité doit être validée 
  * @returns envoie une requête PATCH à l'API pour mettre à jour l'état de la pièce d'identité.
  */

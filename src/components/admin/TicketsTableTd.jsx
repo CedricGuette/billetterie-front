@@ -1,5 +1,9 @@
 import React from "react";
 
+/** Ce composant est l'enfant de TicketsTableLine.
+ * @param {object} ticket ticket à afficher.
+ * @returns renvoie une ligne du tableau de ticket.
+ */
 const TicketsTableTd = ({ ticket }) => {
 
     return (

@@ -1,6 +1,11 @@
 import React from 'react';
-import DeleteUserButton from './DeleteUserButton';
+import ModeratorProvider from '../../contexts/ModeratorProvider';
+import ModeratorTd from './ModeratorTd';
 
+/** Ce composant est l'en-tête du tableau contenant les modérateurs dans l'administration.
+ * @param {object} moderators ensemble des moderateurs à afficher.
+ * @returns renvoie un tableau des modérateurs en entrée.
+ */
 const ModeratorTable = ({ moderators }) => {
 
     return (
@@ -16,17 +21,9 @@ const ModeratorTable = ({ moderators }) => {
                 </thead>
                 <tbody>
                     {moderators.map((user) => (
-                        <tr key={user.id}>
-                            <td>
-                                {user.username}
-                            </td>
-                            <td>
-                                {user.createdDate} 
-                            </td>
-                            <td>
-                                <DeleteUserButton id={user.id} />
-                            </td>
-                        </tr>
+                        <ModeratorProvider>
+                            <ModeratorTd moderator={ user } />
+                        </ModeratorProvider>
                      ))}
                      </tbody>
             </table>

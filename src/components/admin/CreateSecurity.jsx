@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 /** Composant CreateSécurity qui permet de créer un nouvel agent de sécurité.
- * 
  * @returns {JSX.Element} Le formulaire pour créer un agent de sécurité.
  */
 const CreateSecurity = () => {

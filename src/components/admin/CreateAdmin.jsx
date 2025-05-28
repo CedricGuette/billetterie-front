@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 /** Composant CreateAdmin qui permet de créer un nouvel administrateur.
- * 
  * @returns {JSX.Element} Le formulaire pour créer un administrateur.
  */
 const CreateAdmin = () => {

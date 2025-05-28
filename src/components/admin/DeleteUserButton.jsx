@@ -1,27 +1,15 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { ModeratorContext } from "../../contexts/ModeratorProvider";
 
-/** Composant pour supprimer un utilisateur.
- * @param {string} id - L'identifiant de l'utilisateur à supprimer.
+/** Ce composant permet de supprimer un utilisateur en envoyant une requête DELETE à l'API.
+ * @param {string} id L'identifiant de l'utilisateur à supprimer.
  * @returns envoie une requête DELETE à l'API pour supprimer l'utilisateur.
- * @description Ce composant permet de supprimer un utilisateur en envoyant une requête DELETE à l'API.
  */
  function DeleteUserButton({id}) {
 
     // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
-    const [deletedElement, setdeletedElement] = useState(false);
-    const navigate = useNavigate();
+    const { setDeleted } = useContext(ModeratorContext);
 
-    // Si l'utilisateur a été supprimé, on le redirige vers la page d'accueil
-    useEffect(() => {
-        if (deletedElement){
-            return navigate("/");
-        }
-    },[deletedElement, navigate]);
-
-    // On crée un objet vide pour le corps de la requête
-    const customer = JSON.stringify({});
 
     // Fonction pour envoyer une requête DELETE à l'API pour supprimer l'utilisateur
     const handleSubmit = async (e) => {
@@ -30,16 +18,13 @@ import { useNavigate } from "react-router-dom";
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/users` + id ,{
                 method: "DELETE",
                 headers : { 
-                    "Content-Type": "application/json",
                     "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
-                },
-                
-                body: customer
-                
+                    "Host": "http://localhost:3000"
+                }
             })
             .then((res) => {
                 if (res.ok) {
-                    setdeletedElement(true);
+                    setDeleted(true);
                 }
                 
             })

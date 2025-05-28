@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
-/** Composant CustomerProfile qui affiche le profil de l'utilisateur connecté et ses tickets.
+/** Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} Le composant CustomerProfile.
- * @description Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. 
- * Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  */
 const CustomerProfile = () => {
     

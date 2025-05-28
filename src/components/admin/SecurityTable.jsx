@@ -1,6 +1,11 @@
 import React from 'react';
-import DeleteUserButton from './DeleteUserButton';
+import ModeratorProvider from '../../contexts/ModeratorProvider';
+import SecurityTd from './SecurityTd';
 
+/** Ce composant est l'en-tête du tableau contenant les agents de sécurité dans l'administration.
+ * @param {object} securities ensemble des agents de sécurité à afficher.
+ * @returns renvoie un tableau des agents de sécurité en entrée.
+ */
 const SecurityTable = ({ securities }) => {
 
     return (
@@ -16,17 +21,9 @@ const SecurityTable = ({ securities }) => {
                 </thead>
                  <tbody>
                     {securities.map((user) => (
-                        <tr key={user.id}>
-                            <td>
-                                {user.username}
-                            </td>
-                            <td>
-                                {user.createdDate} 
-                            </td>
-                            <td>
-                                <DeleteUserButton id={user.id} />
-                            </td>
-                        </tr>
+                        <ModeratorProvider>
+                            <SecurityTd security={ user } />
+                        </ModeratorProvider>
                         ))}
                     </tbody>
             </table>

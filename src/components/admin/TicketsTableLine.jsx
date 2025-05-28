@@ -1,6 +1,10 @@
 import React from "react";
 import TicketsTableTd from "./TicketsTableTd";
 
+/** Ce composant est l'en-tête du tableau contenant les tickets des clients dans l'administration
+ * @param {object} tickets ensemble des tickets à afficher.
+ * @returns renvoie un tableau des tickets en entrée.
+ */
 const TicketsTableLine = ({ tickets }) => {
 
     return (

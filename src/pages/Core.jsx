@@ -10,7 +10,6 @@ import { RegisterProvider } from '../contexts/RegisterProvider';
 import AdminPageProvider from '../contexts/AdminPageProvider';
 
 /** Composant Core qui affiche le contenu principal de l'application en fonction du niveau d'authentification de l'utilisateur.
- * 
  * @returns {JSX.Element} Le composant Core.
  */
 const Core = () => {

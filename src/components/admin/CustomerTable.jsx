@@ -1,6 +1,10 @@
 import React from 'react';
 import CustomerTableLine from './CustomerTableLine';
-
+import ModeratorProvider from '../../contexts/ModeratorProvider';
+/** Composant CustomerTable qui permet de créer le contenue du tableau contenant les clients dans l'administration.
+ * @param {Object} customers liste des clients à traiter.
+ * @returns {JSX.Element} Le contenue du tableau des clients.
+ */
 const CustomerTable = ({ customers }) => {
 
     return (
@@ -19,7 +23,11 @@ const CustomerTable = ({ customers }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {customers.map((user) => (<CustomerTableLine user={ user }/>))}
+                    {customers.map((user) => (
+                        <ModeratorProvider>
+                            <CustomerTableLine user={ user }/>
+                        </ModeratorProvider>
+                    ))}
                 </tbody>
             </table>
         </div>

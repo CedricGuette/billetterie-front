@@ -4,7 +4,7 @@ import ModeratorTable from './ModeratorTable';
 import SecurityTable from './SecurityTable';
 import { AdminPageContext } from '../../contexts/AdminPageProvider';
 
-/** Composant pour afficher la liste des utilisateurs et permettre leur gestion
+/** Composant pour afficher la liste des utilisateurs et permettre leur gestion.
  * @returns {JSX.Element} La liste des utilisateurs avec des options de gestion.
  */
 const UsersList = () => {

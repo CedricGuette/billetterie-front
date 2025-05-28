@@ -4,7 +4,6 @@ import { createContext } from 'react';
 
 export const AuthLevelContext = createContext();
 /** Composant AuthLevelProvider qui fournit le niveau d'authentification de l'utilisateur et gère la session.
- * 
  * @param {Object} children - Les composants enfants qui auront accès au contexte d'authentification.
  * @returns {JSX.Element} Le fournisseur de contexte AuthLevelContext.      
  */

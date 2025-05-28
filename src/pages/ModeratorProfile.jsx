@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import ValidationPhotoItem from '../components/moderator/VerificationPhotoItem';
 import ModeratorProvider from '../contexts/ModeratorProvider';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
+import VerificationPhotoItem from '../components/moderator/VerificationPhotoItem';
 
+/** Affiche la modération, les photos à valider et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
+ * @returns {JSX.Element} La page de modération.
+ */
 const ModeratorProfile = () => {
     const [photos, setUser] = useState([]);
 
@@ -35,13 +38,27 @@ const ModeratorProfile = () => {
     }
 
     return (
-        <div>
+        <div className="moderation">
             <h2>Panneau de modérations</h2>
             <button onClick={handleClick}>Déconnexion</button>
-            {photos.map((photo) => (
-                <ModeratorProvider key={photo.id}>
-                    <ValidationPhotoItem key={photo.id} id={photo.id} url={photo.url} />
-                </ModeratorProvider>))}
+            <div className="moderation__panel">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th >Informations client</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {photos.map((photo) => (
+                            <ModeratorProvider key={photo.id}>
+                                <VerificationPhotoItem photo={photo}/>
+                            </ModeratorProvider>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
