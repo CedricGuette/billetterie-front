@@ -1,0 +1,88 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+    &__panel {
+    list-style-type: none;
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    justify-content: space-around;
+    position: relative;
+    right: 30px;
+  }
+}
+
+.create-panel {
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 0 30px 30px 30px;
+  margin-top: 15px;
+  max-width: 400px;
+  width: 100%;
+
+  form {
+    width: 70%;
+  }
+
+  label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+  }
+
+  input {
+    width: 95%;
+  }
+
+
+  button {
+    margin-top: 20px;
+  }
+}
+
+.user-list-table {
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 0 30px 30px 30px;
+  margin-top: 15px;
+}
+
+.admin-user-list {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .user-type{
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+
+
+    span {
+      margin-left: 10px;
+      margin-right: 10px;
+
+      &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.tickets-cell:hover {
+  cursor:help;
+}
+
+.info-tickets {
+  display: block;
+  background-color: white;
+  position: absolute;
+  right:10%;
+}

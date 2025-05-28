@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './style/style.scss';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Banner from './components/Banner';
 import PaypalPayer from './pages/PaypalPayer';
 import CreateAdmin from './components/admin/CreateAdmin';
-import UsersList from './pages/UsersList';
 import Core from './pages/Core';
 import AuthLevelProvider from './contexts/AuthLevelProvider';
 
@@ -19,7 +18,6 @@ root.render(
         <main>
           <Routes>
             <Route path="/" element={<Core />} />
-            <Route path="/userslist" element={<UsersList />} />
             <Route path="/pay/:ticket" element={<PaypalPayer />} />
             <Route path="/startapphere" element={<CreateAdmin />} />
             <Route path="*" element={<h1>404 Page non trouvée</h1>} />

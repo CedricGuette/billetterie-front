@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ValidationPhotoItem from '../components/moderator/VerificationPhotoItem';
 import ModeratorProvider from '../contexts/ModeratorProvider';
+import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
 const ModeratorProfile = () => {
     const [photos, setUser] = useState([]);
+
+    const { setSession } = useContext(AuthLevelContext);
+    const { setLevel } = useContext(AuthLevelContext);
 
     // On met en place l'appel à l'API pour récupérer les photos à valider
     useEffect(() => {
@@ -23,9 +27,17 @@ const ModeratorProfile = () => {
             });
     }, []);
 
+        // Fonction pour se déconnecter
+    const handleClick = () => {
+        localStorage.removeItem('SESSION');
+        setSession(false);
+        setLevel("ROLE_UNKNOWN");
+    }
+
     return (
         <div>
             <h2>Panneau de modérations</h2>
+            <button onClick={handleClick}>Déconnexion</button>
             {photos.map((photo) => (
                 <ModeratorProvider key={photo.id}>
                     <ValidationPhotoItem key={photo.id} id={photo.id} url={photo.url} />

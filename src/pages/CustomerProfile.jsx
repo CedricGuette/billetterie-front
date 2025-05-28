@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
 /** Composant CustomerProfile qui affiche le profil de l'utilisateur connecté et ses tickets.
@@ -37,22 +36,12 @@ const CustomerProfile = () => {
             });
     }, []);
 
-    // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
-    const [LoggedOut, setLoggedOut] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (LoggedOut){
-            return navigate("/");
-        }
-    },[LoggedOut, navigate]);
     
-
+    // Fonction pour se déconnecter
     const handleClick = () => {
         localStorage.removeItem('SESSION');
         setSession(false);
         setLevel("ROLE_UNKNOWN");
-        setLoggedOut(true);
     }
 
     return (
@@ -81,7 +70,7 @@ const CustomerProfile = () => {
                         </strong>
                     </li>                ))}
                 <li>
-                    <Link to="/" onClick={handleClick}>Déconnexion</Link>
+                    <button onClick={handleClick}>Déconnexion</button>
                 </li>
             </ul>
         </div>

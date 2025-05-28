@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import Login from './Login';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
@@ -27,7 +26,7 @@ function Banner() {
                 <h1>Billetterie pour les Jeux Olympiques de 2024 de Paris</h1>
             </div>
             <nav>
-                {session ? <Link className="logout-button" to="/" onClick={handleClick}>Se déconnecter</Link> : <Login />}
+                {session ? <button className="logout" onClick={handleClick}>Se déconnecter</button> : <Login />}
             </nav>
         </header>
     );

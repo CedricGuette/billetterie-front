@@ -80,10 +80,10 @@ const Login = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="login" onSubmit={handleSubmit}>
             <div>
                 <label>
-                    <div>
+                    <div className="labelname">
                         E-mail:
                     </div>
                     <input
@@ -97,7 +97,7 @@ const Login = () => {
             </div>
             <div>
                 <label>
-                    <div>
+                    <div className="labelname">
                         Mot de passe:
                     </div>
                     <input

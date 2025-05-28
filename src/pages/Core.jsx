@@ -7,6 +7,7 @@ import Administration from './Administration';
 import ValidateQr from './ValidateQr';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import { RegisterProvider } from '../contexts/RegisterProvider';
+import AdminPageProvider from '../contexts/AdminPageProvider';
 
 /** Composant Core qui affiche le contenu principal de l'application en fonction du niveau d'authentification de l'utilisateur.
  * 
@@ -17,22 +18,26 @@ const Core = () => {
 
     const { level } = useContext(AuthLevelContext);
 
-                switch (level) {
-                case "ROLE_USER":
-                    return <CustomerProfile />;
-                case "ROLE_MODERATOR":
-                    return <ModeratorProfile />;
-                case "ROLE_SECURITY":
-                    return <ValidateQr />;
-                case "ROLE_ADMIN":
-                    return <Administration />;
-                default:
-                    return (
-                        <RegisterProvider>
-                            <TicketShop />
-                        </RegisterProvider>)
-                        }
-                        
+    switch (level) {
+    case "ROLE_USER":
+        return <CustomerProfile />;
+    case "ROLE_MODERATOR":
+        return <ModeratorProfile />;
+    case "ROLE_SECURITY":
+        return <ValidateQr />;
+    case "ROLE_ADMIN":
+        return(
+            <AdminPageProvider>
+                <Administration />
+            </AdminPageProvider>
+        )
+    default:
+        return (
+            <RegisterProvider>
+                <TicketShop />
+            </RegisterProvider>
+        )
+    }                    
 };
 
 export default Core;
