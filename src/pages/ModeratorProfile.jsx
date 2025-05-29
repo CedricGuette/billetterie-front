@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import ModeratorProvider from '../contexts/ModeratorProvider';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import VerificationPhotoItem from '../components/moderator/VerificationPhotoItem';
+import Pagination from '../components/Pagination';
+import { PageContext } from '../contexts/PageProvider';
 
 /** Affiche la modération, les photos à valider et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} La page de modération.
@@ -11,6 +13,7 @@ const ModeratorProfile = () => {
 
     const { setSession } = useContext(AuthLevelContext);
     const { setLevel } = useContext(AuthLevelContext);
+    const { page } = useContext(PageContext);
 
     // On met en place l'appel à l'API pour récupérer les photos à valider
     useEffect(() => {
@@ -37,11 +40,28 @@ const ModeratorProfile = () => {
         setLevel("ROLE_UNKNOWN");
     }
 
+    const elementPerPage = 10;
+    const photosInDB = photos.length;
+
+    const photoPageFunction = () => {
+        const startInObject = ((page - 1) * elementPerPage);
+        const photosPageUseEffect = [];
+        for(let i = 0 ; i <= (elementPerPage - 1); i++) {
+            if(photos[startInObject + i]) {
+                photosPageUseEffect[i] = photos[startInObject + i];
+            }
+        }
+        return photosPageUseEffect;
+    }
+    
+    const photoPage = photoPageFunction();
+
     return (
         <div className="moderation">
             <h2>Panneau de modérations</h2>
             <button onClick={handleClick}>Déconnexion</button>
             <div className="moderation__panel">
+                <Pagination elementPerPage={ elementPerPage } totalElements={ photosInDB } />
                 <table>
                     <thead>
                         <tr>
@@ -51,7 +71,7 @@ const ModeratorProfile = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {photos.map((photo) => (
+                        {photoPage.map((photo) => (
                             <ModeratorProvider key={photo.id}>
                                 <VerificationPhotoItem photo={photo}/>
                             </ModeratorProvider>

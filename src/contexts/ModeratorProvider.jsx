@@ -4,8 +4,7 @@ import { createContext } from 'react';
 
 export const ModeratorContext = createContext();
 
-/**
- * Ce composant fournit un contexte pour gérer l'état de la modération, notamment si un élément a été supprimé et pour afficher en grand la photo.
+/**Ce composant fournit un contexte pour gérer l'état de la modération, notamment si un élément a été supprimé et pour afficher en grand la photo.
  * @param {Object} children - Les composants enfants à envelopper dans le contexte de modération.
  * @returns {JSX.Element} Le contexte de modération avec l'état et la fonction de mise à jour.
  */

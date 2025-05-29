@@ -3,6 +3,7 @@ import CustomerTable from './CustomerTable';
 import ModeratorTable from './ModeratorTable';
 import SecurityTable from './SecurityTable';
 import { AdminPageContext } from '../../contexts/AdminPageProvider';
+import PageProvider from '../../contexts/PageProvider';
 
 /** Composant pour afficher la liste des utilisateurs et permettre leur gestion.
  * @returns {JSX.Element} La liste des utilisateurs avec des options de gestion.
@@ -74,9 +75,9 @@ const UsersList = () => {
                 <span onClick={handleOnClickOnSecurity}> Agents de sécurité </span>
             </div>
             <div className="user-list-table">
-                {userType === "CUSTOMER" ? <CustomerTable customers={customers} /> : ""}
-                {userType === "MODERATOR" ?<ModeratorTable moderators={moderators} /> : ""}
-                {userType === "SECURITY" ?<SecurityTable securities={securities} /> : ""}
+                {userType === "CUSTOMER" ? <PageProvider><CustomerTable customers={customers} /></PageProvider> : ""}
+                {userType === "MODERATOR" ?<PageProvider><ModeratorTable moderators={moderators} /></PageProvider> : ""}
+                {userType === "SECURITY" ?<PageProvider><SecurityTable securities={securities} /></PageProvider> : ""}
             </div>
         </div>
     );

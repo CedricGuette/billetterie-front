@@ -1,6 +1,9 @@
 import React from 'react';
+import { useContext } from 'react';
 import ModeratorProvider from '../../contexts/ModeratorProvider';
 import ModeratorTd from './ModeratorTd';
+import Pagination from '../Pagination';
+import { PageContext } from '../../contexts/PageProvider';
 
 /** Ce composant est l'en-tête du tableau contenant les modérateurs dans l'administration.
  * @param {object} moderators ensemble des moderateurs à afficher.
@@ -8,9 +11,28 @@ import ModeratorTd from './ModeratorTd';
  */
 const ModeratorTable = ({ moderators }) => {
 
+        const elementPerPage = 10;
+        const moderatorsInDB = moderators.length;
+    
+        const { page } = useContext(PageContext);
+    
+        const moderatorPageFunction = () => {
+            const startInObject = ((page - 1) * elementPerPage);
+            const moderatorsPageUseEffect = [];
+            for(let i = 0 ; i <= (elementPerPage - 1); i++) {
+                if(moderators[startInObject + i]) {
+                    moderatorsPageUseEffect[i] = moderators[startInObject + i];
+                }
+            }
+            return moderatorsPageUseEffect;
+        }
+        
+        const moderatorPage = moderatorPageFunction();
+
     return (
         <div>
             <h2>Liste des modérateurs</h2>
+            <Pagination elementPerPage={ elementPerPage } totalElements={ moderatorsInDB } />
             <table>
                 <thead>
                     <tr>
@@ -20,8 +42,8 @@ const ModeratorTable = ({ moderators }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {moderators.map((user) => (
-                        <ModeratorProvider>
+                    {moderatorPage.map((user) => (
+                        <ModeratorProvider key={ user.id }>
                             <ModeratorTd moderator={ user } />
                         </ModeratorProvider>
                      ))}

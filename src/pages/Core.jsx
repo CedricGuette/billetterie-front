@@ -8,6 +8,7 @@ import ValidateQr from './ValidateQr';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import { RegisterProvider } from '../contexts/RegisterProvider';
 import AdminPageProvider from '../contexts/AdminPageProvider';
+import PageProvider from '../contexts/PageProvider';
 
 /** Composant Core qui affiche le contenu principal de l'application en fonction du niveau d'authentification de l'utilisateur.
  * @returns {JSX.Element} Le composant Core.
@@ -21,7 +22,11 @@ const Core = () => {
     case "ROLE_USER":
         return <CustomerProfile />;
     case "ROLE_MODERATOR":
-        return <ModeratorProfile />;
+        return (
+            <PageProvider>
+                <ModeratorProfile />
+            </PageProvider>
+        );
     case "ROLE_SECURITY":
         return <ValidateQr />;
     case "ROLE_ADMIN":

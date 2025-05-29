@@ -42,7 +42,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+            await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -61,10 +61,6 @@ const Login = () => {
                     throw new Error("Erreur lors de la connexion, veuillez réessayer.");
                 }
             });
-            
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'enregistrement du nouveau client, veuillez réessayer.");
-            }
         } catch (error) {
             console.error(error);
         }

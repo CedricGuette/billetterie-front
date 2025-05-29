@@ -50,7 +50,7 @@ const CreateUser = () => {
                     </div>
                     <div className="toggle-switch">
                         <input onClick={ handleOnToggle } className="toggle-input" id="toggle" type="checkbox" />
-                        <label className="toggle-label" for="toggle"></label>
+                        <label className="toggle-label" htmlFor="toggle"></label>
                     </div>
                     <div className="create-type">
                         Agent de sécurité

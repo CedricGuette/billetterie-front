@@ -1,0 +1,49 @@
+.pagination {
+
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+
+
+    div {
+
+
+        height: 25px;
+        width: 25px;
+        border-radius: 10px;
+        margin-right: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid black;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+
+    }
+
+
+
+    .number-page {
+
+        background-color: #282c34;
+        color: white; 
+        
+        &.actual{
+
+            background-color: white;
+            color: black;
+            font-weight: bold;
+
+        }
+    }
+
+    .previous, .next {
+ 
+        background-color: gray;
+        color: black; 
+        font-weight: bolder;
+    }
+}
