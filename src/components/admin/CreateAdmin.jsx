@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import NotFound from "../../pages/NotFound";
 
 /** Composant CreateAdmin qui permet de créer un nouvel administrateur.
  * @returns {JSX.Element} Le formulaire pour créer un administrateur.
  */
 const CreateAdmin = () => {
+
+    const [ adminExist, setAdminExist ] = useState(false);
+
+    useEffect(() => {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/doAdminExist`, {
+                method: "GET",
+                headers : { 
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => setAdminExist(res))
+    },[])
+
     const [form, setForm] = useState({
         username: "",
         password: "",
@@ -53,37 +66,41 @@ const CreateAdmin = () => {
         }));
     };
 
-    return (
-        
-        <form onSubmit={handleSubmit}>
-            <div>
-                <div >{sent}</div>
-                <label>
-                    E-mail:
-                    <input
-                        type="email"
-                        name="username"
-                        value={form.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Mot de passe:
-                    <input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-            </div>
-            <button type="submit">Créer Admin</button>
-        </form>
-    );
+    if(!adminExist) {
+        return (
+            
+            <form onSubmit={handleSubmit} className="createAdmin">
+                <div>
+                    <div>{sent}</div>
+                    <label>
+                        E-mail:
+                        <input
+                            type="email"
+                            name="username"
+                            value={form.username}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Mot de passe:
+                        <input
+                            type="password"
+                            name="password"
+                            value={form.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                </div>
+                <button type="submit">Créer Admin</button>
+            </form>
+        );
+    }
+
+    return (<NotFound />)
 };
 
 export default CreateAdmin;

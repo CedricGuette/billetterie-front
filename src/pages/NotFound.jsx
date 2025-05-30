@@ -1,0 +1,13 @@
+import react from "react";
+
+const NotFound = () => {
+    
+    return(
+        <div className="not-found">
+            <h2>404</h2>
+            La page que vous cherchez n'existe pas!
+        </div>
+    )
+};
+
+export default NotFound;

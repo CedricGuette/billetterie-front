@@ -6,9 +6,11 @@
 @use './components/pagination';
 @use './components/cookies';
 @use './structure/header';
+@use './pages/createAdmin';
 @use './pages/ticketShop';
 @use './pages/customerRegister';
 @use './pages/customerProfile';
 @use './pages/admin';
 @use './pages/moderator';
 @use './pages/security';
+@use './pages/notFound';

@@ -10,6 +10,7 @@ import Core from './pages/Core';
 import AuthLevelProvider from './contexts/AuthLevelProvider';
 import CookiesProvider from './contexts/CookiesProvider';
 import Cookies from './components/Cookies';
+import NotFound from './pages/NotFound';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,7 +24,7 @@ root.render(
               <Route path="/" element={<Core />} />
               <Route path="/pay/:ticket" element={<PaypalPayer />} />
               <Route path="/startapphere" element={<CreateAdmin />} />
-              <Route path="*" element={<h1>404 Page non trouvée</h1>} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </AuthLevelProvider>
