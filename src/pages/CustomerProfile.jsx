@@ -37,40 +37,60 @@ const CustomerProfile = () => {
     
     // Fonction pour se déconnecter
     const handleClick = () => {
-        localStorage.removeItem('SESSION');
+        localStorage.removeItem("SESSION");
         setSession(false);
         setLevel("ROLE_UNKNOWN");
     }
 
     return (
-        <div>
-            <h2>Profil de {user.firstName} {user.lastName}</h2>
-            <ul>
-                <li>
-                    adresse e-mail : {user.username}
-                </li>
-                <li>
-                     profil créé le {user.createdDate}
-                </li>
-                <li>
-                    { user.profileIsValidate ? "Profil validé" : "Profil en attente de validation"}
-                </li>
-                <li>
-                    Numéro de téléphone : {user.phoneNumber}
-                </li>
-                {tickets.map((ticket) => (
-                    <li key={ticket.id}>
-                        <strong>
-                        {ticket.howManyTickets} tickets 
-                        {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
-                        {user.profileIsValidate && !ticket.ticketIsPayed ? ( <Link to={ url + ticket.id }> Procéder au paiement</Link>) : "" }
-
-                        </strong>
-                    </li>                ))}
-                <li>
-                    <button onClick={handleClick}>Déconnexion</button>
-                </li>
-            </ul>
+        <div className="user">
+            <div className="user__panel">
+                <h2>Profil de {user.firstName} {user.lastName}</h2>
+                <button onClick={handleClick}>Déconnexion</button>
+                <div className="user__info">
+                    <h3>Vos informations:</h3>
+                    <ul>
+                        <li>
+                            { user.profileIsValidate ? "Profil validé" : "Profil en attente de validation"}
+                        </li>
+                        <li>
+                            adresse e-mail : {user.username}
+                        </li>
+                        <li>
+                            Numéro de téléphone : {user.phoneNumber}
+                        </li>
+                        <li>
+                            profil créé le {user.createdDate}
+                        </li>
+                    </ul>
+                    <h3>Vos tickets:</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre de places</th>
+                                <th>Payé le</th>
+                                <th>Etat du ticket</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tickets.map((ticket) => (
+                                <tr key={ticket.id}>
+                                    <td>
+                                        {ticket.howManyTickets} 
+                                    </td>
+                                    <td>
+                                        {user.profileIsValidate ? "" : "Profil en attente de validation" }
+                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <Link to={ url + ticket.id }> Procéder au paiement</Link> : ticket.ticketCreatedDate }
+                                    </td>
+                                    <td>
+                                        {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };

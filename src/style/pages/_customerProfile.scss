@@ -1,0 +1,27 @@
+.user {
+
+    &__panel {
+        max-width: 600px;
+        width: 100%;
+        border: 2px solid black;
+        border-radius: 15px;
+        padding: 20px 60px 20px 60px;
+
+        button {
+
+            margin-bottom: 20px;
+        }
+    }
+
+    &__info {
+
+        border: 2px solid black;
+        border-radius: 15px;
+        padding: 20px 60px 20px 60px;
+
+        li{
+            list-style-type: none;
+        }
+
+    }
+}

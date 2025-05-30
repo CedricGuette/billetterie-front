@@ -1,0 +1,22 @@
+.security {
+
+    button {
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    &__panel {
+
+        button {
+            margin-top: 30px;
+        }
+    }
+
+    &__response {
+
+        margin-bottom: 20px;
+    }
+}

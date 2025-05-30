@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 
 /**
  * Composant ValidateQr pour valider un QR code.
@@ -8,6 +9,8 @@ import React, { useState } from 'react';
 const ValidateQr = () => {
     const [qrCode, setQrCode] = useState('');
     const [response, setResponse] = useState(null);
+    const { setSession } = useContext(AuthLevelContext);
+    const { setLevel } = useContext(AuthLevelContext);
     
     // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
@@ -29,22 +32,33 @@ const ValidateQr = () => {
 
     };
 
+    // Fonction pour se déconnecter
+    const handleClick = () => {
+        localStorage.removeItem("SESSION");
+        setSession(false);
+        setLevel("ROLE_UNKNOWN");
+    }
+
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={qrCode}
-                onChange={(e) => setQrCode(e.target.value)}
-                placeholder="Entrer le QR code" 
-                required
-            />
-            <button type="submit">Valider le QR</button>
-            {response && (
-                <div>
-                    {response}
-                </div>
-            )}
-        </form>
+        <div className="security">
+            <button onClick={handleClick}>Déconnexion</button>
+            <form onSubmit={handleSubmit} className="security__panel">
+                <h2>Vérification de la validité du ticket</h2>
+                {response && (
+                    <div className="security__response">
+                        {response}
+                    </div>
+                )}
+                <input
+                    type="text"
+                    value={qrCode}
+                    onChange={(e) => setQrCode(e.target.value)}
+                    placeholder="Entrer le QR code" 
+                    required
+                />
+                <button type="submit">Valider le QR</button>
+            </form>
+        </div>
     );
 };
 
