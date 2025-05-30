@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
+import { CookiesContext } from "../contexts/CookiesProvider";
 
 /**
  * Composant Login pour la connexion des utilisateurs.
@@ -32,6 +33,8 @@ const Login = () => {
     const [LoggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
 
+    const { cookies } = useContext(CookiesContext);
+
     useEffect(() => {
         if (LoggedIn){
             return navigate("/");
@@ -41,28 +44,33 @@ const Login = () => {
     // On met en place la fonction de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: customer
-                
-            })
-            .then((res) =>  res.json())
-            .then((data) => {
-                if (data.token) {
-                    const object = { value : data.token, timestamp : new Date().getTime()}
-                    localStorage.setItem("SESSION", JSON.stringify(object));
-                    setSession(true);
-                    setLoggedIn(true);
-                } else {
-                    throw new Error("Erreur lors de la connexion, veuillez réessayer.");
-                }
-            });
-        } catch (error) {
-            console.error(error);
+
+        if(cookies) {
+            try {
+                await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: customer
+                    
+                })
+                .then((res) =>  res.json())
+                .then((data) => {
+                    if (data.token) {
+                        const object = { value : data.token, timestamp : new Date().getTime()}
+                        localStorage.setItem("SESSION", JSON.stringify(object));
+                        setSession(true);
+                        setLoggedIn(true);
+                    } else {
+                        throw new Error("Erreur lors de la connexion, veuillez réessayer.");
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            console.error("Veuillez accepter les cookies pour accéder à cette fonctionnalité.")
         }
     };
 

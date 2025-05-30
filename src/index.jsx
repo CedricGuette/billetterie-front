@@ -8,22 +8,27 @@ import PaypalPayer from './pages/PaypalPayer';
 import CreateAdmin from './components/admin/CreateAdmin';
 import Core from './pages/Core';
 import AuthLevelProvider from './contexts/AuthLevelProvider';
+import CookiesProvider from './contexts/CookiesProvider';
+import Cookies from './components/Cookies';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      <AuthLevelProvider>
-        <Banner />
-        <main>
-          <Routes>
-            <Route path="/" element={<Core />} />
-            <Route path="/pay/:ticket" element={<PaypalPayer />} />
-            <Route path="/startapphere" element={<CreateAdmin />} />
-            <Route path="*" element={<h1>404 Page non trouvée</h1>} />
-          </Routes>
-        </main>
-      </AuthLevelProvider>
+      <CookiesProvider>
+        <AuthLevelProvider>
+          <Banner />
+          <main>
+            <Routes>
+              <Route path="/" element={<Core />} />
+              <Route path="/pay/:ticket" element={<PaypalPayer />} />
+              <Route path="/startapphere" element={<CreateAdmin />} />
+              <Route path="*" element={<h1>404 Page non trouvée</h1>} />
+            </Routes>
+          </main>
+        </AuthLevelProvider>
+        <Cookies />
+      </CookiesProvider>
     </Router>
   </React.StrictMode>
 );

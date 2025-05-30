@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createContext } from 'react';
+import { CookiesContext } from './CookiesProvider';
 
 
 export const AuthLevelContext = createContext();
@@ -13,26 +14,32 @@ export const AuthLevelProvider = ({ children }) => {
 
     const [level, setLevel] = useState(["ROLE_UNKNOWN"]);
     const [session, setSession] = useState(sessionIsOpen);
+    const { cookies } = useContext(CookiesContext);
 
     // Vérifie si une session existe dans le localStorage et met à jour le niveau d'authentification
     useEffect(() => {
+    
+        if(localStorage.getItem('SESSION') !== null) {
 
-    if(localStorage.getItem('SESSION') !== null) {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/level`,
-                {
-                method : "GET",
-                headers : { 
-                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
-                }
-            }) 
-            .then((response) => response.json())
-            .then((data) => {
-            setLevel(data[0]);
+            if(cookies) {
 
-            })
-            .catch((error) => console.error('Erreur lors de la requête:', error));
+
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/level`,
+                    {
+                    method : "GET",
+                    headers : { 
+                        "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
+                    }
+                }) 
+                .then((response) => response.json())
+                .then((data) => {
+                setLevel(data[0]);
+
+                })
+                .catch((error) => console.error('Erreur lors de la requête:', error));
+            }
         }
-    }, [session]);
+    }, [session, cookies]);
 
     return (
         <AuthLevelContext.Provider value={{level, setLevel , session, setSession}}>
