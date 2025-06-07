@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
+import StripeContainer from '../components/StripeContainer';
 
 /** Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} Le composant CustomerProfile.
@@ -11,11 +11,17 @@ const CustomerProfile = () => {
     // On initialise le state pour stocker les informations de l'utilisateur et les tickets
     const [user, setUser] = useState([]);
     const [tickets, setTickets] = useState([])
+
+    // On initialise le state pour afficher le paiement
+    const [ pay, setPay ] = useState(false);
+    const [ ticketId, setTicketId ] = useState(null);
+
+    // On met en place les contextes pour gérer la session et les autorisations et pour afficher le paiement du bon ticket
     const { setSession } = useContext(AuthLevelContext);
     const { setLevel } = useContext(AuthLevelContext);
-    const url = "/pay/";
 
 
+    // On crée la requête pour récupérer les informations de l'utilisateur
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/api/customers`,
                 {
@@ -34,12 +40,30 @@ const CustomerProfile = () => {
             });
     }, []);
 
+    // Fonction pour passer au paiement
+    const handleClickPay = (ticketIdFromRequest) => (e) => {
+        e.preventDefault();
+        setTicketId(ticketIdFromRequest);
+        setPay(!pay);
+    }
+
     
     // Fonction pour se déconnecter
     const handleClick = () => {
         localStorage.removeItem("SESSION");
         setSession(false);
         setLevel("ROLE_UNKNOWN");
+    }
+
+    // Si le state de payment est vrai ainsis que l'id du ticket à payer n'est pas null
+    if(pay && ticketId !== null) {
+        return (
+            <div className="user">
+                <button onClick={handleClickPay(null)}>Revenir au profil</button>
+                <StripeContainer ticketId={ ticketId } user={ user }/>
+            </div>
+
+        )
     }
 
     return (
@@ -80,10 +104,10 @@ const CustomerProfile = () => {
                                     </td>
                                     <td>
                                         {user.profileIsValidate ? "" : "Profil en attente de validation" }
-                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <Link to={ url + ticket.id }> Procéder au paiement</Link> : ticket.ticketCreatedDate }
+                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)}> Procéder au paiement</button> : ticket.ticketCreatedDate }
                                     </td>
                                     <td>
-                                        {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
+                                        {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + "/" + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
                                     </td>
                                 </tr>
                             ))}

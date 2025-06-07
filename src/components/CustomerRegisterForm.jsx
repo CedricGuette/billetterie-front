@@ -50,7 +50,7 @@ const CustomerRegisterForm = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+            await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
                 method: "POST",
                 headers: {
                  
@@ -61,9 +61,6 @@ const CustomerRegisterForm = (props) => {
             .then((res) => {
                 if (res.ok) {
                     setSent(true);
-            }
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'enregistrement du nouveau client, veuillez réessayer.");
             }
             });
             } catch (error) {

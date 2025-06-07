@@ -15,11 +15,10 @@ import { ModeratorContext } from "../../contexts/ModeratorProvider";
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/users` + id ,{
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/users/` + id ,{
                 method: "DELETE",
                 headers : { 
-                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
-                    "Host": "http://localhost:3000"
+                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value
                 }
             })
             .then((res) => {

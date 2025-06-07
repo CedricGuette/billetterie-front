@@ -1,21 +1,40 @@
 import React, { useEffect, useState } from "react";
 import NotFound from "../../pages/NotFound";
+import { useNavigate } from "react-router-dom";
 
 /** Composant CreateAdmin qui permet de créer un nouvel administrateur.
  * @returns {JSX.Element} Le formulaire pour créer un administrateur.
  */
 const CreateAdmin = () => {
 
-    const [ adminExist, setAdminExist ] = useState(false);
+    const [ adminExist, setAdminExist ] = useState(null);
+        // State pour indiquer si le formulaire a été envoyé avec succès
+    const [sent, setSent] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-            fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/doAdminExist`, {
+        try{
+           fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/doAdminExist`, {
                 method: "GET",
                 headers : { 
                     "Content-Type": "application/json",
                 },
-            }).then((res) => setAdminExist(res))
+            }).then((res) => res.json())
+            .then(data => {
+                setAdminExist(data)
+            })
+        } catch(error) {
+            console.log(error);
+        }
+
     },[])
+
+    // Redirection si compte créé
+    useEffect(() => {
+        if (sent){
+            return navigate("/");
+        }
+    },[sent, navigate]);
 
     const [form, setForm] = useState({
         username: "",
@@ -23,35 +42,30 @@ const CreateAdmin = () => {
     });
 
     // Préparation des données pour l'envoi au backend
-    const moderator = JSON.stringify(
+    const admin = JSON.stringify(
         {
             username: `${form.username}`,
             password: `${form.password}`,
         }
     );
 
-    // State pour indiquer si le formulaire a été envoyé avec succès
-    const [sent, setSent] = useState(false);
 
     // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/createAdmin`, {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/createAdmin`, {
                 method: "POST",
                 headers : { 
                     "Content-Type": "application/json",
                 },
-                body: moderator
+                body: admin
             })
             .then((res) =>  res.json())
             .then((data) => {
                 setSent(data[0]);
             });
-            if (!response.ok) {
-            throw new Error("Erreur lors de l'enregistrement d'Admin', veuillez réessayer.");
-            }
-            console.log("Demande de réservation envoyée avec succès");
+            console.log("Administrateur créé avec succès!");
         } catch (error) {
             console.error(error);
         }
@@ -66,12 +80,12 @@ const CreateAdmin = () => {
         }));
     };
 
-    if(!adminExist) {
+    if(adminExist === false) {
         return (
-            
+
             <form onSubmit={handleSubmit} className="createAdmin">
                 <div>
-                    <div>{sent}</div>
+                    <div className="response__panel">{sent}</div>
                     <label>
                         E-mail:
                         <input
@@ -98,8 +112,7 @@ const CreateAdmin = () => {
                 <button type="submit">Créer Admin</button>
             </form>
         );
-    }
-
+    } 
     return (<NotFound />)
 };
 

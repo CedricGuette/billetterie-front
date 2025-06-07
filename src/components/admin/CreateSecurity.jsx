@@ -24,7 +24,7 @@ const CreateSecurity = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/createSecurity`, {
+            await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/createSecurity`, {
                 method: "POST",
                 headers : { 
                     "Content-Type": "application/json",
@@ -36,10 +36,7 @@ const CreateSecurity = () => {
             .then((data) => {
                 setSent(data[0]);
             });
-            if (!response.ok) {
-            throw new Error("Erreur lors de l'enregistrement du nouveau client, veuillez réessayer.");
-            }
-            console.log("Demande de réservation envoyée avec succès");
+            console.log("Agent de sécurité créé avec succès");
         } catch (error) {
             console.error(error);
         }

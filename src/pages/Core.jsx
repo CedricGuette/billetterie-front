@@ -21,6 +21,7 @@ const Core = () => {
     switch (level) {
     case "ROLE_USER":
         return <CustomerProfile />;
+;
     case "ROLE_MODERATOR":
         return (
             <PageProvider>
