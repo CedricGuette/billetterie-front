@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { RegisterContext } from "../contexts/RegisterProvider";
+import { validEmail, validName, validPassword, validPhoneNumber } from "./customer/Regex";
 
 /**
  * Composant pour enregistrer un nouveau client.  
@@ -15,13 +16,112 @@ const CustomerRegisterForm = (props) => {
     // On importe le composant React et useState pour gérer l'état du formulaire
     const [form, setForm] = useState({
         firstName: "",
-        LastName: "",
+        lastName: "",
         email: "",
         phoneNumber: "",
         password: "",
         confirmPassword: "",
         photo: null,
     });
+
+    // On crée les useStates pour afficher les erreurs en entrée
+    const [ errFirstName, setErrFirstName ] = useState(null);
+    const [ errLastName, setErrLastName ] = useState(null);
+    const [ errEmail, setErrEmail ] = useState(null);
+    const [ errPhoneNumber, setErrPhoneNumber ] = useState(null);
+    const [ errPassword, setErrPassword ] = useState(null);
+    const [ errConfirmPassword, setErrConfirmPassword ] = useState(null);
+    const [ errPhotoSize, setErrPhotoSize ] = useState(null);
+    const [ errPhotoType, setErrPhotoType ] = useState(null);
+    const [ errInForm, setErrInForm ] = useState(false);
+    const [ errList, setErrList ] = useState(false);
+    const [ errListArrayState, setErrListArrayState ] = useState([])
+
+    // On crée les fonctions qui gèrent les erreurs d'entrées
+
+    const validateFirstName = () => {
+
+        if(!validName.test(form.firstName)) {
+            setErrFirstName(false);
+        } else {
+            setErrFirstName(true);
+        }
+    }
+
+    const validateLastName = () => {
+
+        if(!validName.test(form.lastName)) {
+            setErrLastName(false);
+        } else {
+            setErrLastName(true);
+        }
+    }
+
+    const validateEmail = () => {
+
+        if(!validEmail.test(form.email)) {
+            setErrEmail(false);
+        } else {
+            setErrEmail(true);
+        }
+    }
+
+    const validatePhoneNumber = () => {
+
+        if(!validPhoneNumber.test(form.phoneNumber)) {
+            setErrPhoneNumber(false);
+        } else {
+            setErrPhoneNumber(true);
+        }
+    }   
+
+        const validatePassword = () => {
+        
+        if(!validPassword.test(form.password)) {
+            setErrPassword(false);
+        } else {
+            setErrPassword(true);
+        }
+    }
+
+    const validateConfirmPassword = () => {
+        
+        if(form.confirmPassword === form.password && form.confirmPassword !== (null || "")) {
+            setErrConfirmPassword(true);
+        } else {
+            setErrConfirmPassword(false);
+        }
+    }
+
+    const validatePhoto = () => {
+        if(form.photo !== null) {
+            if(form.photo.size >= 2097152) {
+                setErrPhotoSize(false);
+            } else {
+                setErrPhotoSize(true);
+            }
+            if(form.photo.type === ("image/jpeg" || "image/png" || "image/jpg")) {
+                setErrPhotoType(true);
+            } else {
+                setErrPhotoType(false);
+            }
+        }
+    }
+
+    const validateForm = () => {   
+        if(errFirstName && (errLastName && (errEmail && (errPhoneNumber && (errPassword && (errConfirmPassword && (errPhotoSize && (errPhotoType && true)))))))) {
+            setErrInForm(true);
+        } else {
+            setErrInForm(false);
+        }
+    }
+
+    // Pour actualiser le statut de la photo quand selectionnée
+    useEffect(() => {
+        validatePhoto();
+        // On ne peut pas ajouter la fonction au tableau de dépendance sinon on crée une boucle de rendu infini
+        // eslint-disable-next-line
+    },[form.photo])
 
     // On récupère le choix de l'utilisateur et on prépare le format de la requête pour l'API
     const customer = JSON.stringify(
@@ -49,22 +149,27 @@ const CustomerRegisterForm = (props) => {
     // On met en place la fonction de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
-                method: "POST",
-                headers: {
-                 
-                },
-                body: formData
-                
-            })
-            .then((res) => {
-                if (res.ok) {
-                    setSent(true);
-            }
-            });
+        if(errInForm){
+            try {
+                await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+                    method: "POST",
+                    headers: {
+                    
+                    },
+                    body: formData
+                    
+                })
+                .then((res) => {
+                    if (res.ok) {
+                        setSent(true);
+                }
+                });
             } catch (error) {
-            console.error(error);
+                console.error(error);
+            }
+        } else {
+            setErrList(true);
+            createErrListArray();
         }
     };
 
@@ -77,6 +182,40 @@ const CustomerRegisterForm = (props) => {
         }));
     };
 
+    const createErrListArray = () => {
+        let errListArray = [];
+        if(!errFirstName){
+            errListArray.push("Le prénom n'est pas valide");
+        }
+        if(!errLastName){
+            errListArray.push("Le nom n'est pas valide");
+        }
+        if(!errEmail){
+            errListArray.push("L'adresse e-mail n'est pas valide");
+        }
+        if(!errPhoneNumber){
+            errListArray.push("Le numéro de téléphone n'est pas valide");
+        }
+        if(!errPassword){
+            errListArray.push("Le mot de passe n'est pas valide");
+        }
+        if(!errConfirmPassword){
+            errListArray.push("La confirmation du mot de passe ne correspond pas au mot de passe");
+        }
+        if(!errPhotoSize){
+            errListArray.push("La photo pèse plus lourd que 2Mo");
+        }
+        if(!errPhotoType){
+            errListArray.push("Le format de la photo n'est pas accepté");
+        }
+
+        setErrListArrayState(errListArray);
+    }
+
+    const handleCloseErrorList = () => {
+        setErrList(false);
+    }
+
     return (
         <form onSubmit={handleSubmit} className="customer-register-form">
             <div>
@@ -87,6 +226,8 @@ const CustomerRegisterForm = (props) => {
                         name="firstName"
                         value={form.firstName}
                         onChange={handleChange}
+                        onBlur={validateFirstName}
+                        className={errFirstName === null ? "" : ( !errFirstName === true ? "unvalid" : "valid" )}
                         required
                     />
                 </label>
@@ -99,6 +240,8 @@ const CustomerRegisterForm = (props) => {
                         name="lastName"
                         value={form.lastName}
                         onChange={handleChange}
+                        onBlur={validateLastName}
+                        className={errLastName === null ? "" : ( !errLastName === true ? "unvalid" : "valid" )}
                         required
                     />
                 </label>
@@ -111,6 +254,8 @@ const CustomerRegisterForm = (props) => {
                         name="email"
                         value={form.email}
                         onChange={handleChange}
+                        onBlur={validateEmail}
+                        className={errEmail === null ? "" : ( !errEmail === true ? "unvalid" : "valid" )}
                         required
                     />
                 </label>
@@ -123,6 +268,8 @@ const CustomerRegisterForm = (props) => {
                         name="phoneNumber"
                         value={form.phoneNumber}
                         onChange={handleChange}
+                        onBlur={validatePhoneNumber}
+                        className={errPhoneNumber === null ? "" : ( !errPhoneNumber === true ? "unvalid" : "valid" )}
                         required
                     />
                 </label>
@@ -135,8 +282,12 @@ const CustomerRegisterForm = (props) => {
                         name="password"
                         value={form.password}
                         onChange={handleChange}
+                        onBlur={validatePassword}
+                        className={errPassword === null ? "" : ( !errPassword === true ? "unvalid" : "valid" )}
                         required
                     />
+                    <span className="info-password" >Minimum 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial</span>
+                
                 </label>
             </div>
             <div>
@@ -147,6 +298,8 @@ const CustomerRegisterForm = (props) => {
                         name="confirmPassword"
                         value={form.confirmPassword}
                         onChange={handleChange}
+                        onBlur={validateConfirmPassword}
+                        className={errConfirmPassword === null ? "" : ( !errConfirmPassword === true ? "unvalid" : "valid" )}
                         required
                     />
                 </label>
@@ -162,12 +315,24 @@ const CustomerRegisterForm = (props) => {
                         className="file-input"
                         required
                     />
-                <div className="file-input-info">Formats acceptés: JPEG, PNG, JPG </div>
-                <div className="file-input-info">Taille maximale: 2 Mo</div>
+                <div className={ errPhotoType === null ? "file-input-info" : (!errPhotoType === true ? "file-input-info unvalid" : "file-input-info valid")}>Formats acceptés: JPG, JPEG, PNG </div>
+                <div className={ errPhotoSize === null ? "file-input-info" : (!errPhotoSize === true ? "file-input-info unvalid" : "file-input-info valid")} >Taille maximale: 2 Mo</div>
                 </label>
             </div>
-            <button type="submit">Réservez vos tickets</button>
+            <button type="submit" onPointerEnter={validateForm} onSubmit={handleSubmit}>Réservez vos tickets</button>
+            {errList ? (
+                <div className="error-list">
+                    <ul>
+                        Veuillez remplir les critères suivant correctement pour soumettre votre réservation :
+                    {errListArrayState.map((error) => 
+                        <li key={error}>{error}</li>
+                    )}
+                    <button onClick={handleCloseErrorList}>Compris</button>
+                    </ul>
+                </div>
+                ) : ""}
         </form>
+        
     );
 };
 

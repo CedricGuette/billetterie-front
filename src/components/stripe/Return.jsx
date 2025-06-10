@@ -26,7 +26,7 @@ const Return = () => {
         }, 5000);
 
         return () => clearTimeout(redirect);
-    },[response])
+    },[response, navigate])
 
     return (
         <div>

@@ -104,7 +104,7 @@ const CustomerProfile = () => {
                                     </td>
                                     <td>
                                         {user.profileIsValidate ? "" : "Profil en attente de validation" }
-                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)}> Procéder au paiement</button> : ticket.ticketCreatedDate }
+                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)} className="paybutton"> Procéder au paiement</button> : ticket.ticketCreatedDate }
                                     </td>
                                     <td>
                                         {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + "/" + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}

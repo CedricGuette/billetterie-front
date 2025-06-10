@@ -11,6 +11,10 @@
 
   label {
     font-size: 1.2rem;
+
+    .info-password {
+      font-size: 0.8rem;
+    }
   }
 
 
@@ -24,6 +28,14 @@
     font-size: 1.2rem;
     padding-left: 2.5%;
     padding-right: 2.5%;
+
+    &.valid {
+      border-color: green;
+    }
+
+    &.unvalid{
+      border-color: red;
+    }
 
     &:focus {
       outline: none;
@@ -59,5 +71,13 @@
     font-size: 0.8rem;
     margin-top: 5px;
     width: 100%;
+
+    &.unvalid {
+      color: red;
+    }
+
+    &.valid {
+      color: green;
+    }
   }
 }

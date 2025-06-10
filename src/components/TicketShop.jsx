@@ -38,6 +38,21 @@ const TicketShop = () => {
         setChoice(false);
     }
 
+    // On gère l'affichage de l'option au dessus du formulaire
+    const choiceInChart = () => {
+        if(selectedOption === "1") {
+            return "Solo | Une place | 50€"
+        }
+        if(selectedOption === "2") {
+            return "Duo | Deux places | 90€"
+        }
+        if(selectedOption === "4") {
+            return "Familiale | Quatre places | 160€"
+        }
+
+        return "Erreur de choix"
+    }
+
     // Si aucun choix n'est fait, affiche le formulaire de sélection d'offre
     if(!choice)
     return (
@@ -49,9 +64,9 @@ const TicketShop = () => {
                         <option value="" disabled>
                             -- Veuillez selectionner une offre --
                         </option>
-                        <option value="1">Solo</option>
-                        <option value="2">Duo</option>
-                        <option value="4">Familiale</option>
+                        <option value="1">Solo | Une place | 50€</option>
+                        <option value="2">Duo | Deux places | 90€</option>
+                        <option value="4">Familiale | Quatre places | 160€</option>
                     </select>
                 </label>
                 <button type="submit" disabled={!selectedOption}>
@@ -65,7 +80,7 @@ const TicketShop = () => {
     else{
         return (
             <div>
-                <button onClick={handleChangeChoice} className="go-back-button">Changer de formule</button>
+                <button onClick={handleChangeChoice} className="go-back-button">Changer de formule</button> <div className="choice-in-chart">Votre offre: {choiceInChart()}</div>
                 <CustomerRegisterForm choice={selectedOption}/>
             </div>
 
