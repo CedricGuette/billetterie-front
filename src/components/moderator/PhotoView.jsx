@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ModeratorContext } from "../../contexts/ModeratorProvider";
 
-const PhotoView = ({ photo }) => {
+const PhotoView = ({ photo, alt }) => {
 
     const { setShowPhoto } = useContext(ModeratorContext);
 
@@ -11,7 +11,7 @@ const PhotoView = ({ photo }) => {
     return (
         <div className="photoview">
             <div className="close-cross" onClick={handleClick}>X</div>
-            <img src={process.env.REACT_APP_BACKEND_URL + photo.url} alt={photo.id} onClick={handleClick} />
+            <img src={photo} alt={alt} onClick={handleClick} />
         </div>
     )
 }
