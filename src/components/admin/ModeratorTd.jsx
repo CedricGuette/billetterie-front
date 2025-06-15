@@ -20,7 +20,7 @@ const ModeratorTd = ({ moderator }) => {
                     {moderator.createdDate} 
                 </td>
                 <td>
-                    <DeleteUserButton id={moderator.id} />
+                    <DeleteUserButton id={moderator.id} username={moderator.username} />
                 </td>
             </tr>
         )

@@ -7,7 +7,7 @@ import React from "react";
 const TicketsTableTd = ({ ticket }) => {
 
     return (
-        <tr index={ticket.id}>
+        <tr>
             <td>
                 {ticket.id}
             </td>
@@ -24,7 +24,7 @@ const TicketsTableTd = ({ ticket }) => {
                 {ticket.ticketCreatedDate}
             </td>
             <td>
-                {ticket.ticketIsUsed ? "Oui" : "Non"}
+                {ticket.ticketIsUsed ? "Non" : "Oui"}
             </td>
             <td>
                 {ticket.ticketValidationDate}

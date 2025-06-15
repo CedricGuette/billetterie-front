@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ErrorPanelContext } from "../../contexts/ErrorPanelProvider";
 
 /** Composant CreateModerator qui permet de créer un nouveau moderateur.
  * @returns {JSX.Element} Le formulaire pour créer un moderateur.
@@ -17,12 +18,17 @@ const CreateModerator = () => {
         }
     );
 
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
+
     // State pour indiquer si le formulaire a été envoyé avec succès
     const [sent, setSent] = useState(false);
 
     // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let requestIsOk = false;
+
         try {
             await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/createModerator`, {
                 method: "POST",
@@ -32,13 +38,25 @@ const CreateModerator = () => {
                 },
                 body: moderator
             })
-            .then((res) =>  res.json())
+            .then((res) =>  {
+                if(res.ok === true) {
+                    requestIsOk = true;
+                }
+                return res.json()
+            })
             .then((data) => {
-                setSent(data[0]);
+                if(requestIsOk === true) {
+                    setErrorType(2);
+                    setErrorMessage(data.created);
+                    setSent(true);
+                } else {
+                    setErrorType(0);
+                    setErrorMessage(data.error);
+                }
             });
-            console.log("Modérateur créé avec succès");
         } catch (error) {
-            console.error(error);
+            setErrorType(0)
+            setErrorMessage(error);
         }
     };
 

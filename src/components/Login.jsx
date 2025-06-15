@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import { CookiesContext } from "../contexts/CookiesProvider";
+import { ErrorPanelContext } from "../contexts/ErrorPanelProvider";
 
 /**
  * Composant Login pour la connexion des utilisateurs.
@@ -30,16 +31,18 @@ const Login = () => {
     );
 
     // On initialise le state pour savoir si l'utilisateur est connecté et le rediriger vers la page utilisateur
-    const [LoggedIn, setLoggedIn] = useState(false);
+    const [LoggedInOut, setLoggedInOut] = useState(false);
     const navigate = useNavigate();
 
     const { cookies } = useContext(CookiesContext);
 
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
+
     useEffect(() => {
-        if (LoggedIn){
+        if (LoggedInOut){
             return navigate("/");
         }
-    },[LoggedIn, navigate]);
+    },[LoggedInOut, navigate]);
 
     // On met en place la fonction de soumission du formulaire
     const handleSubmit = async (e) => {
@@ -57,20 +60,28 @@ const Login = () => {
                 })
                 .then((res) =>  res.json())
                 .then((data) => {
+                    // On stock dans les cookies s'il y a un token en réponse
                     if (data.token) {
                         const object = { value : data.token, timestamp : new Date().getTime()}
                         localStorage.setItem("SESSION", JSON.stringify(object));
                         setSession(true);
-                        setLoggedIn(true);
+                        setLoggedInOut(true);
                     } else {
-                        throw new Error("Erreur lors de la connexion, veuillez réessayer.");
+                        setSession(false);
+                        setLoggedInOut(true);
+                        setErrorType(0);
+                        setErrorMessage(data.error);
                     }
                 });
             } catch (error) {
-                console.error(error);
+                setSession(false);
+                setLoggedInOut(true);
+                setErrorType(0);
+                setErrorMessage(error);
             }
         } else {
-            console.error("Veuillez accepter les cookies pour accéder à cette fonctionnalité.")
+            setErrorType(0);
+            setErrorMessage("Veuillez accepter les cookies pour accéder à cette fonctionnalité.")
         }
     };
 

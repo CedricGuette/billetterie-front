@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ErrorPanelContext } from "../../contexts/ErrorPanelProvider";
 
 /** Composant CreateSécurity qui permet de créer un nouvel agent de sécurité.
  * @returns {JSX.Element} Le formulaire pour créer un agent de sécurité.
@@ -20,9 +21,14 @@ const CreateSecurity = () => {
     // State pour indiquer si le formulaire a été envoyé avec succès
     const [sent, setSent] = useState(false);
 
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
+
     // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let requestIsOk = false;
+
         try {
             await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/createSecurity`, {
                 method: "POST",
@@ -32,13 +38,25 @@ const CreateSecurity = () => {
                 },
                 body: moderator
             })
-            .then((res) =>  res.json())
+            .then((res) =>  {
+                if(res.ok === true) {
+                    requestIsOk = true;
+                }
+                return res.json()
+            })
             .then((data) => {
-                setSent(data[0]);
+                if(requestIsOk === true) {
+                    setErrorType(2);
+                    setErrorMessage(data.created);
+                    setSent(true);
+                } else {
+                    setErrorType(0);
+                    setErrorMessage(data.error);
+                }
             });
-            console.log("Agent de sécurité créé avec succès");
         } catch (error) {
-            console.error(error);
+            setErrorType(0)
+            setErrorMessage(error);
         }
     };
 

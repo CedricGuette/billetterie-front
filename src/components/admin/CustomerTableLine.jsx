@@ -32,10 +32,10 @@ const CustomerTableLine = ({ user }) => {
                 </td>
                 <td className="tickets-cell" onMouseEnter={ () => setHidden(false) } onMouseLeave={ () => setHidden(true) }>
                     <strong>Afficher le(s) ticket(s)</strong>
-                    {hidden ? "" : <div className="info-tickets"><TicketsTableLine tickets={user.tickets}/></div> }
+                    {hidden ? "" : <div className="info-tickets"><TicketsTableLine tickets={user.tickets} /></div> }
                 </td>
                 <td>
-                    <DeleteUserButton id={user.id} />
+                    <DeleteUserButton id={user.id} username={ user.username } />
                 </td>
             </tr>
         )

@@ -11,23 +11,28 @@ import CookiesProvider from './contexts/CookiesProvider';
 import Cookies from './components/Cookies';
 import NotFound from './pages/NotFound';
 import Return from './components/stripe/Return';
+import ErrorPanelProvider from './contexts/ErrorPanelProvider';
+import ErrorPanel from './components/ErrorPanel';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
       <CookiesProvider>
-        <AuthLevelProvider>
-          <Banner />
-          <main>
-            <Routes>
-              <Route path="/" element={<Core />} />
-              <Route path="/startapphere" element={<CreateAdmin />} />
-              <Route path="/return/:sessionId/:ticketId" element={ <Return /> } />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-        </AuthLevelProvider>
+        <ErrorPanelProvider>
+          <ErrorPanel />
+          <AuthLevelProvider>
+            <Banner />
+            <main>
+              <Routes>
+                <Route path="/" element={<Core />} />
+                <Route path="/startapphere" element={<CreateAdmin />} />
+                <Route path="/return/:sessionId/:ticketId" element={ <Return /> } />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+          </AuthLevelProvider>
+        </ErrorPanelProvider>
         <Cookies />
       </CookiesProvider>
     </Router>

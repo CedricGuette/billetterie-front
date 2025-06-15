@@ -27,7 +27,7 @@ const PhotoAcces = ({ photoUrl, customer }) => {
     })
     .catch((error) => console.error('Erreur lors de la requête:', error))
 
-    },[]) 
+    },[photoUrl]) 
 
     return(
     <td className="verificationPhoto" rowSpan={4}>

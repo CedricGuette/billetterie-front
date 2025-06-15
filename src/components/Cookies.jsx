@@ -26,6 +26,11 @@ const Cookies = () => {
         setClosed(true);
     }
 
+    // Fonction pour ouvrir le panneau des cookies
+    const handleOpenCookiesOption = () => {
+        setClosed(false);
+    }
+
     if(!closed) {
         return(
             <div className="cookies">
@@ -51,6 +56,11 @@ const Cookies = () => {
                 </div>
             </div>
         )
+    }
+
+    if(closed && (localStorage.getItem('COOKIES') === null)) {
+
+        return (<div onClick={handleOpenCookiesOption} className="cookie-button-open">Option des cookies</div>)
     }
 
     return("")

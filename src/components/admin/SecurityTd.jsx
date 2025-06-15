@@ -20,7 +20,7 @@ const SecurityTable = ({ security }) => {
                     {security.createdDate} 
                 </td>
                 <td>
-                    <DeleteUserButton id={security.id} />
+                    <DeleteUserButton id={ security.id } username={ security.username }/>
                 </td>
             </tr>
         )

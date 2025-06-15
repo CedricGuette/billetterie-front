@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { RegisterContext } from "../contexts/RegisterProvider";
 import { validEmail, validName, validPassword, validPhoneNumber } from "./customer/Regex";
+import { ErrorPanelContext } from "../contexts/ErrorPanelProvider";
 
 /**
  * Composant pour enregistrer un nouveau client.  
@@ -34,8 +35,8 @@ const CustomerRegisterForm = (props) => {
     const [ errPhotoSize, setErrPhotoSize ] = useState(null);
     const [ errPhotoType, setErrPhotoType ] = useState(null);
     const [ errInForm, setErrInForm ] = useState(false);
-    const [ errList, setErrList ] = useState(false);
-    const [ errListArrayState, setErrListArrayState ] = useState([])
+
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
 
     // On crée les fonctions qui gèrent les erreurs d'entrées
 
@@ -149,7 +150,11 @@ const CustomerRegisterForm = (props) => {
     // On met en place la fonction de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // On vérifie l'intégrité des réponses dans le formulaire
         if(errInForm){
+            let requestIsOk = false;
+            //On evoie les informations en reqête
             try {
                 await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
                     method: "POST",
@@ -160,15 +165,27 @@ const CustomerRegisterForm = (props) => {
                     
                 })
                 .then((res) => {
-                    if (res.ok) {
+                    if (res.ok === true) {
+                        requestIsOk = true;
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    if(requestIsOk === true){
+                        setErrorType(2);
+                        setErrorMessage(data.created);
                         setSent(true);
-                }
+
+                    } else {
+                        setErrorType(0);
+                        setErrorMessage(data.error);
+                    }
                 });
             } catch (error) {
-                console.error(error);
+                setErrorType(0);
+                setErrorMessage(error);
             }
         } else {
-            setErrList(true);
             createErrListArray();
         }
     };
@@ -182,8 +199,11 @@ const CustomerRegisterForm = (props) => {
         }));
     };
 
+    // Fonction qui crée les erreurs de saisies à afficher dans la boite de dialogue
     const createErrListArray = () => {
+
         let errListArray = [];
+        
         if(!errFirstName){
             errListArray.push("Le prénom n'est pas valide");
         }
@@ -209,11 +229,8 @@ const CustomerRegisterForm = (props) => {
             errListArray.push("Le format de la photo n'est pas accepté");
         }
 
-        setErrListArrayState(errListArray);
-    }
-
-    const handleCloseErrorList = () => {
-        setErrList(false);
+        setErrorType(1);
+        setErrorMessage(errListArray);
     }
 
     return (
@@ -320,17 +337,6 @@ const CustomerRegisterForm = (props) => {
                 </label>
             </div>
             <button type="submit" onPointerEnter={validateForm} onSubmit={handleSubmit}>Réservez vos tickets</button>
-            {errList ? (
-                <div className="error-list">
-                    <ul>
-                        Veuillez remplir les critères suivant correctement pour soumettre votre réservation :
-                    {errListArrayState.map((error) => 
-                        <li key={error}>{error}</li>
-                    )}
-                    <button onClick={handleCloseErrorList}>Compris</button>
-                    </ul>
-                </div>
-                ) : ""}
         </form>
         
     );

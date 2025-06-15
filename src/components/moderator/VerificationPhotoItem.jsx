@@ -2,7 +2,6 @@
 import { useContext } from 'react';
 import { ModeratorContext } from '../../contexts/ModeratorProvider';
 import ModerationButton from './ModerationButton';
-import PhotoView from './PhotoView';
 import PhotoAcces from './PhotoAcces';
 
 /** * Composant pour afficher les pièces d'identités des utilisateurs.
@@ -11,29 +10,7 @@ import PhotoAcces from './PhotoAcces';
  */
 const VerificationPhotoItem = ({ photo }) => {
 
-    const { deleted, showPhoto, setShowPhoto } = useContext(ModeratorContext);
-
-    const handleClick = () => {
-        setShowPhoto(true);
-    }
-
-    const photoRequest = (photoUrl) => {
-
-        fetch(`${process.env.REACT_APP_BACKEND_URL + photoUrl}`,
-        {
-        method : "GET",
-        headers : { 
-            "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
-            }
-        })
-        .then((response) => response.blob())
-        .then((blob) => {
-            const imageUrl = URL.createObjectURL(blob);
-            return blob
-        })
-        .catch((error) => console.error('Erreur lors de la requête:', error))
-
-    }
+    const { deleted } = useContext(ModeratorContext);
 
     if(!deleted) {
         return(
@@ -54,7 +31,7 @@ const VerificationPhotoItem = ({ photo }) => {
                     </div>
                 </td>
                 <td >
-                    <ModerationButton id={photo.id} />
+                    <ModerationButton id={photo.id} user={photo.customer} />
                 </td>
             </tr>
         )

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
+import { ErrorPanelContext } from '../contexts/ErrorPanelProvider';
 
 /**
  * Composant ValidateQr pour valider un QR code.
@@ -8,9 +9,10 @@ import { AuthLevelContext } from '../contexts/AuthLevelProvider';
  */
 const ValidateQr = () => {
     const [qrCode, setQrCode] = useState('');
-    const [response, setResponse] = useState(null);
     const { setSession } = useContext(AuthLevelContext);
     const { setLevel } = useContext(AuthLevelContext);
+
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
     
     // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
@@ -24,10 +26,17 @@ const ValidateQr = () => {
             })
             .then((res) =>  res.json())
             .then((data) => {
-            setResponse(data[0]);
+                if(data.error !== undefined) {
+                    setErrorType(0);
+                    setErrorMessage(data.error);
+                } else {
+                    setErrorType(2);
+                    setErrorMessage(data.validated);
+                }
             })
         } catch (error) {
-            setResponse({ error: 'La requête a échoué' });
+            setErrorType(0);
+            setErrorMessage({ error });
         }
 
     };
@@ -44,11 +53,6 @@ const ValidateQr = () => {
             <button onClick={handleClick}>Déconnexion</button>
             <form onSubmit={handleSubmit} className="security__panel">
                 <h2>Vérification de la validité du ticket</h2>
-                {response && (
-                    <div className="security__response">
-                        {response}
-                    </div>
-                )}
                 <input
                     type="text"
                     value={qrCode}

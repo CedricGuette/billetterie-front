@@ -7,7 +7,7 @@ export const validPassword = new RegExp(
 );
 
 export const validName = new RegExp(
-    '^([a-zA-Z]){2,}$'
+    '^([a-zA-ZÀ-ÖØ-öø-ÿ]){2,}$'
 )
 
 export const validPhoneNumber = new RegExp(

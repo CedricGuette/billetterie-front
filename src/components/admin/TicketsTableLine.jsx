@@ -22,7 +22,7 @@ const TicketsTableLine = ({ tickets }) => {
                 </tr>
             </thead>
             <tbody>
-                {tickets.map((ticket) => (<TicketsTableTd ticket={ ticket }/>))}
+                {tickets.map((ticket) => (<TicketsTableTd ticket={ ticket } key={ticket.id}/>))}
             </tbody>
         </table>
     )

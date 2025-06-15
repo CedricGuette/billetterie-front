@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import StripeContainer from '../components/StripeContainer';
+import { ErrorPanelContext } from '../contexts/ErrorPanelProvider';
 
 /** Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} Le composant CustomerProfile.
@@ -19,10 +20,14 @@ const CustomerProfile = () => {
     // On met en place les contextes pour gérer la session et les autorisations et pour afficher le paiement du bon ticket
     const { setSession } = useContext(AuthLevelContext);
     const { setLevel } = useContext(AuthLevelContext);
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
 
 
     // On crée la requête pour récupérer les informations de l'utilisateur
     useEffect(() => {
+
+        let requestIsOk = false;
+
         fetch(`${process.env.REACT_APP_BACKEND_URL}/api/customers`,
                 {
                 method : "GET",
@@ -30,15 +35,27 @@ const CustomerProfile = () => {
                     "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
                 }
             }) 
-            .then((response) => response.json())
+            .then((response) => {
+                if(response.ok === true) {
+                    requestIsOk = true;
+                }
+                return response.json()
+            })
             .then((data) => {
-                setUser(data)
-                setTickets(data.tickets);
+                if(requestIsOk === true) {
+                    setUser(data)
+                    setTickets(data.tickets);
+                } else {
+                    setErrorType(0);
+                    setErrorMessage(data.error);
+                }
+
             })
             .catch((error) => {
-                console.error("Erreur lors de la récupération des données utilisateur :", error);
+                setErrorType(0);
+                setErrorMessage(error);
             });
-    }, []);
+    }, [setErrorMessage, setErrorType]);
 
     // Fonction pour passer au paiement
     const handleClickPay = (ticketIdFromRequest) => (e) => {

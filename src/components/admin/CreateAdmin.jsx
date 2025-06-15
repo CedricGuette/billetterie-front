@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NotFound from "../../pages/NotFound";
 import { useNavigate } from "react-router-dom";
+import { ErrorPanelContext } from "../../contexts/ErrorPanelProvider";
 
 /** Composant CreateAdmin qui permet de créer un nouvel administrateur.
  * @returns {JSX.Element} Le formulaire pour créer un administrateur.
@@ -11,6 +12,8 @@ const CreateAdmin = () => {
         // State pour indiquer si le formulaire a été envoyé avec succès
     const [sent, setSent] = useState(null);
     const navigate = useNavigate();
+
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
 
     useEffect(() => {
         try{
@@ -24,10 +27,11 @@ const CreateAdmin = () => {
                 setAdminExist(data)
             })
         } catch(error) {
-            console.log(error);
+            setErrorType(0);
+            setErrorMessage(error);
         }
 
-    },[])
+    },[setErrorMessage,setErrorType])
 
     // Redirection si compte créé
     useEffect(() => {
@@ -63,11 +67,14 @@ const CreateAdmin = () => {
             })
             .then((res) =>  res.json())
             .then((data) => {
+                setErrorType(2);
+                setErrorMessage("Administrateur créé avec succès!");
                 setSent(data[0]);
             });
-            console.log("Administrateur créé avec succès!");
+
         } catch (error) {
-            console.error(error);
+            setErrorType(0);
+            setErrorMessage(error);
         }
     };
 

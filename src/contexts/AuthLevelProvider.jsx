@@ -14,6 +14,7 @@ export const AuthLevelProvider = ({ children }) => {
 
     const [level, setLevel] = useState(["ROLE_UNKNOWN"]);
     const [session, setSession] = useState(sessionIsOpen);
+    const [ error, setError ] = useState(null);
     const { cookies } = useContext(CookiesContext);
 
     // Vérifie si une session existe dans le localStorage et met à jour le niveau d'authentification
@@ -22,7 +23,6 @@ export const AuthLevelProvider = ({ children }) => {
         if(localStorage.getItem('SESSION') !== null) {
 
             if(cookies) {
-
 
                 fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/level`,
                     {
@@ -34,9 +34,13 @@ export const AuthLevelProvider = ({ children }) => {
                 .then((response) => response.json())
                 .then((data) => {
                 setLevel(data[0]);
-
                 })
-                .catch((error) => console.error('Erreur lors de la requête:', error));
+                .catch((error) => {
+                    setError('Erreur lors de la requête:' + error)
+                    setLevel("ROLE_UNKNOWN");
+                    setSession(false);
+                    }
+                );
             }
         }
     }, [session, cookies]);
