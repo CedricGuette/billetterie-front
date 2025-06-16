@@ -1,3 +1,6 @@
+/** Affiche une page 404
+ * @returns {JSX.Element} La page d'erreur.
+ */
 const NotFound = () => {
     
     return(

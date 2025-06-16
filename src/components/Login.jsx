@@ -77,7 +77,7 @@ const Login = () => {
                 setSession(false);
                 setLoggedInOut(true);
                 setErrorType(0);
-                setErrorMessage(error);
+                setErrorMessage(error.toString());
             }
         } else {
             setErrorType(0);

@@ -4,6 +4,7 @@ import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import VerificationPhotoItem from '../components/moderator/VerificationPhotoItem';
 import Pagination from '../components/Pagination';
 import { PageContext } from '../contexts/PageProvider';
+import { ErrorPanelContext } from '../contexts/ErrorPanelProvider';
 
 /** Affiche la modération, les photos à valider et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} La page de modération.
@@ -11,9 +12,9 @@ import { PageContext } from '../contexts/PageProvider';
 const ModeratorProfile = () => {
     const [photos, setUser] = useState([]);
 
-    const { setSession } = useContext(AuthLevelContext);
-    const { setLevel } = useContext(AuthLevelContext);
+    const { setSession, setLevel  } = useContext(AuthLevelContext);
     const { page } = useContext(PageContext);
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
 
     // On met en place l'appel à l'API pour récupérer les photos à valider
     useEffect(() => {
@@ -29,9 +30,10 @@ const ModeratorProfile = () => {
                 setUser(data);
             })
             .catch((error) => {
-                console.error('Erreur lors de la récupération des photos :', error);
+                setErrorType(0);
+                setErrorMessage(error.toString());
             });
-    }, []);
+    }, [setErrorMessage, setErrorType]);
 
         // Fonction pour se déconnecter
     const handleClick = () => {

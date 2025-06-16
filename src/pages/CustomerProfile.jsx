@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import StripeContainer from '../components/StripeContainer';
 import { ErrorPanelContext } from '../contexts/ErrorPanelProvider';
+import PdfReader from '../components/customer/PdfReader';
 
 /** Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} Le composant CustomerProfile.
@@ -53,7 +54,7 @@ const CustomerProfile = () => {
             })
             .catch((error) => {
                 setErrorType(0);
-                setErrorMessage(error);
+                setErrorMessage(error.toString());
             });
     }, [setErrorMessage, setErrorType]);
 
@@ -124,7 +125,7 @@ const CustomerProfile = () => {
                                         {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)} className="paybutton"> Procéder au paiement</button> : ticket.ticketCreatedDate }
                                     </td>
                                     <td>
-                                        {ticket.ticketIsPayed ? <a href= {`${process.env.REACT_APP_BACKEND_URL + "/" + ticket.ticketUrl}`}> Accedez à votre ticket</a> : " non payé(s)"}
+                                        {ticket.ticketIsPayed ? <PdfReader pdfUrl={ ticket.ticketUrl } /> : " non payé(s)"}
                                     </td>
                                 </tr>
                             ))}

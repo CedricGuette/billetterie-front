@@ -1,6 +1,11 @@
 import { useContext } from "react";
 import { ErrorPanelContext } from "../contexts/ErrorPanelProvider";
 
+/**
+ * Composant qui gère l'affichage des boites de dialogues sur le site 
+ * 
+ * @returns {JSX.Element} Le composant des boites de dialogue.
+ */
 const ErrorPanel = () => {
 
     const { errorMessage, setErrorMessage, errorType } = useContext(ErrorPanelContext);

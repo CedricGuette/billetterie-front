@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { createContext } from 'react';
 import { CookiesContext } from './CookiesProvider';
+import { ErrorPanelContext } from './ErrorPanelProvider';
 
 
 export const AuthLevelContext = createContext();
@@ -14,13 +15,15 @@ export const AuthLevelProvider = ({ children }) => {
 
     const [level, setLevel] = useState(["ROLE_UNKNOWN"]);
     const [session, setSession] = useState(sessionIsOpen);
-    const [ error, setError ] = useState(null);
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
     const { cookies } = useContext(CookiesContext);
 
     // Vérifie si une session existe dans le localStorage et met à jour le niveau d'authentification
     useEffect(() => {
     
         if(localStorage.getItem('SESSION') !== null) {
+
+            let requestIsOk = false;
 
             if(cookies) {
 
@@ -31,19 +34,38 @@ export const AuthLevelProvider = ({ children }) => {
                         "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
                     }
                 }) 
-                .then((response) => response.json())
+                .then((response) =>{
+                    if(response.ok === true){
+                        requestIsOk = true;
+                    } 
+
+                    return response.json();
+                })
                 .then((data) => {
-                setLevel(data[0]);
+                    if(requestIsOk === true){
+
+                        setSession(true);
+                        setLevel(data.role);
+
+                    } else {
+                        setErrorType(0);
+                        setErrorMessage(data.error);
+
+                        setLevel("ROLE_UNKNOWN");
+                        setSession(false);
+                    }
                 })
                 .catch((error) => {
-                    setError('Erreur lors de la requête:' + error)
+                    setErrorType(0);
+                    setErrorMessage(error.toString());
+
                     setLevel("ROLE_UNKNOWN");
                     setSession(false);
                     }
                 );
             }
         }
-    }, [session, cookies]);
+    }, [session, cookies, setErrorMessage, setErrorType]);
 
     return (
         <AuthLevelContext.Provider value={{level, setLevel , session, setSession}}>

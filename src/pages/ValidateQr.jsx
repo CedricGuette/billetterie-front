@@ -36,7 +36,7 @@ const ValidateQr = () => {
             })
         } catch (error) {
             setErrorType(0);
-            setErrorMessage({ error });
+            setErrorMessage(error.toString());
         }
 
     };

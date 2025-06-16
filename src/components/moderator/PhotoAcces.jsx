@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { ModeratorContext } from "../../contexts/ModeratorProvider";
 import PhotoView from "./PhotoView";
+import { ErrorPanelContext } from "../../contexts/ErrorPanelProvider";
 
 const PhotoAcces = ({ photoUrl, customer }) => {
 
     const [ photo, setPhoto ] = useState(null);
     const { showPhoto, setShowPhoto } = useContext(ModeratorContext);
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
     
     const handleClick = () => {
         setShowPhoto(true);
@@ -25,9 +27,12 @@ const PhotoAcces = ({ photoUrl, customer }) => {
         const blobUrl = URL.createObjectURL(blob);
         setPhoto(blobUrl);
     })
-    .catch((error) => console.error('Erreur lors de la requête:', error))
+    .catch((error) => {
+        setErrorType(0);
+        setErrorMessage(error.toString());
+    })
 
-    },[photoUrl]) 
+    },[photoUrl, setErrorMessage, setErrorType]) 
 
     return(
     <td className="verificationPhoto" rowSpan={4}>

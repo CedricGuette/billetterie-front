@@ -48,7 +48,7 @@ import { ErrorPanelContext } from "../../contexts/ErrorPanelProvider";
             });
         } catch (error) {
             setErrorType(0);
-            setErrorMessage(error);
+            setErrorMessage(error.toString());
         }
     };
 
