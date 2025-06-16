@@ -28,7 +28,7 @@ const CreateAdmin = () => {
             })
         } catch(error) {
             setErrorType(0);
-            setErrorMessage(error);
+            setErrorMessage(error.toString());
         }
 
     },[setErrorMessage,setErrorType])
@@ -57,6 +57,9 @@ const CreateAdmin = () => {
     // Fonction pour gérer la soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let requestIsOk = false;
+
         try {
             fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/createAdmin`, {
                 method: "POST",
@@ -65,11 +68,22 @@ const CreateAdmin = () => {
                 },
                 body: admin
             })
-            .then((res) =>  res.json())
+            .then((res) => {
+                if(res.ok === true){
+                    requestIsOk = true;
+                }
+                return res.json()
+            } )
             .then((data) => {
-                setErrorType(2);
-                setErrorMessage("Administrateur créé avec succès!");
-                setSent(data[0]);
+                if(requestIsOk === true) {
+                    setErrorType(2);
+                    setErrorMessage(data.created);
+                    setSent(true);
+                } else {
+                    setErrorType(0);
+                    setErrorMessage(data.error);
+                }
+
             });
 
         } catch (error) {
@@ -87,7 +101,7 @@ const CreateAdmin = () => {
         }));
     };
 
-    if(adminExist === false) {
+    if(adminExist === false){
         return (
 
             <form onSubmit={handleSubmit} className="createAdmin">

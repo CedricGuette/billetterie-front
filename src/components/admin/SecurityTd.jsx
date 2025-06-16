@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import DeleteUserButton from './DeleteUserButton';
 import { ModeratorContext } from '../../contexts/ModeratorProvider';
+import transformToDate from '../TransformToDate';
 
 /** Ce composant est l'enfant de SecurityTable.
  * @param {object} security agent de securité à afficher.
@@ -17,7 +18,7 @@ const SecurityTable = ({ security }) => {
                     {security.username}
                 </td>
                 <td>
-                    {security.createdDate} 
+                    {security.createdDate ? transformToDate(security.createdDate) : ""} 
                 </td>
                 <td>
                     <DeleteUserButton id={ security.id } username={ security.username }/>

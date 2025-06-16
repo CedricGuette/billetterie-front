@@ -1,4 +1,5 @@
 import React from "react";
+import transformToDate from "../TransformToDate";
 
 /** Ce composant est l'enfant de TicketsTableLine.
  * @param {object} ticket ticket à afficher.
@@ -21,13 +22,13 @@ const TicketsTableTd = ({ ticket }) => {
                 {ticket.ticketIsPayed? "Oui" : "Non"}
             </td>
             <td>
-                {ticket.ticketCreatedDate}
+                {ticket.ticketCreatedDate ? transformToDate(ticket.ticketCreatedDate) : ""}
             </td>
             <td>
                 {ticket.ticketIsUsed ? "Non" : "Oui"}
             </td>
             <td>
-                {ticket.ticketValidationDate}
+                {ticket.ticketValidationDate ? transformToDate(ticket.ticketValidationDate) : ""}
             </td>
             <td>
                 {ticket.ticketIsUsed ? ticket.security.username : ""}

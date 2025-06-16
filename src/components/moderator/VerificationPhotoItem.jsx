@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { ModeratorContext } from '../../contexts/ModeratorProvider';
 import ModerationButton from './ModerationButton';
 import PhotoAcces from './PhotoAcces';
+import transformToDate from '../TransformToDate';
 
 /** * Composant pour afficher les pièces d'identités des utilisateurs.
  * @param {string} photo - contient l'ensemble des données relatives aux photos et utilisateurs.
@@ -24,7 +25,7 @@ const VerificationPhotoItem = ({ photo }) => {
                         <strong>Nom :</strong> {photo.customer.lastName}
                     </div>
                     <div className="customer-info">
-                        <strong>Ajoutée le :</strong> {photo.customer.createdDate}
+                        <strong>Ajoutée le :</strong> {photo.customer.createdDate ? transformToDate(photo.customer.createdDate) : ""}
                     </div>
                     <div className="customer-info">
                         <strong>E-mail :</strong> {photo.customer.username}

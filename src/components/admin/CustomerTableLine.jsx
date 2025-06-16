@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import DeleteUserButton from './DeleteUserButton';
 import TicketsTableLine from './TicketsTableLine';
 import { ModeratorContext } from '../../contexts/ModeratorProvider';
+import transformToDate from '../TransformToDate';
 
 /** Composant enfant de CustomerTable qui va être bouclé pour chaque client.
  * @param {object} user objet content le client
@@ -28,7 +29,7 @@ const CustomerTableLine = ({ user }) => {
                     {user.phoneNumber} 
                 </td>
                 <td>
-                    {user.createdDate} 
+                    {user.createdDate? transformToDate(user.createdDate) : ""} 
                 </td>
                 <td className="tickets-cell" onMouseEnter={ () => setHidden(false) } onMouseLeave={ () => setHidden(true) }>
                     <strong>Afficher le(s) ticket(s)</strong>

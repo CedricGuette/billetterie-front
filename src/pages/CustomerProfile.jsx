@@ -4,6 +4,7 @@ import { AuthLevelContext } from '../contexts/AuthLevelProvider';
 import StripeContainer from '../components/StripeContainer';
 import { ErrorPanelContext } from '../contexts/ErrorPanelProvider';
 import PdfReader from '../components/customer/PdfReader';
+import transformToDate from '../components/TransformToDate';
 
 /** Affiche les informations de l'utilisateur, ses tickets et permet de se déconnecter. Si l'utilisateur n'est pas connecté, il est redirigé vers la page d'accueil.
  * @returns {JSX.Element} Le composant CustomerProfile.
@@ -102,7 +103,7 @@ const CustomerProfile = () => {
                             Numéro de téléphone : {user.phoneNumber}
                         </li>
                         <li>
-                            profil créé le {user.createdDate}
+                            profil créé {user.createdDate ? transformToDate(user.createdDate) : ""}
                         </li>
                     </ul>
                     <h3>Vos tickets:</h3>
@@ -122,7 +123,8 @@ const CustomerProfile = () => {
                                     </td>
                                     <td>
                                         {user.profileIsValidate ? "" : "Profil en attente de validation" }
-                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)} className="paybutton"> Procéder au paiement</button> : ticket.ticketCreatedDate }
+                                        {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)} className="paybutton"> Procéder au paiement</button> : ""}
+                                        { ticket.ticketIsPayed ? transformToDate(ticket.ticketCreatedDate) : ""}
                                     </td>
                                     <td>
                                         {ticket.ticketIsPayed ? <PdfReader pdfUrl={ ticket.ticketUrl } /> : " non payé(s)"}
