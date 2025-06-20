@@ -62,7 +62,7 @@ const Login = () => {
                 .then((data) => {
                     // On stock dans les cookies s'il y a un token en réponse
                     if (data.token) {
-                        const object = { value : data.token, timestamp : new Date().getTime()}
+                        const object = { value : data.token }
                         localStorage.setItem("SESSION", JSON.stringify(object));
                         setSession(true);
                         setLoggedInOut(true);

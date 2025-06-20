@@ -38,7 +38,7 @@ export const AuthLevelProvider = ({ children }) => {
                     if(response.ok === true){
                         requestIsOk = true;
                     } 
-
+                    console.log(response);
                     return response.json();
                 })
                 .then((data) => {
@@ -48,9 +48,10 @@ export const AuthLevelProvider = ({ children }) => {
                         setLevel(data.role);
 
                     } else {
+                                            console.log(data);
                         setErrorType(0);
                         setErrorMessage(data.error);
-
+                        localStorage.removeItem('SESSION');
                         setLevel("ROLE_UNKNOWN");
                         setSession(false);
                     }
@@ -58,7 +59,7 @@ export const AuthLevelProvider = ({ children }) => {
                 .catch((error) => {
                     setErrorType(0);
                     setErrorMessage(error.toString());
-
+                    localStorage.removeItem('SESSION');
                     setLevel("ROLE_UNKNOWN");
                     setSession(false);
                     }

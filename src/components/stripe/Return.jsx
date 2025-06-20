@@ -31,10 +31,11 @@ const Return = () => {
         .then((data) => {
             if(requestIsOk === true) {
                 setErrorType(2);
+                setErrorMessage(data.checkoutStatus)
             } else {
                 setErrorType(0);
+                setErrorMessage(data.error)
             }
-            setErrorMessage(data.checkoutStatus)
             setResponse(true);
         })
     },[response, setResponse, sessionId, ticketId, setErrorMessage, setErrorType])
