@@ -27,7 +27,7 @@ root.render(
               <Routes>
                 <Route path="/" element={<Core />} />
                 <Route path="/startapphere" element={<CreateAdmin />} />
-                <Route path="/return/:sessionId/:ticketId" element={ <Return /> } />
+                <Route path="/return/:ticketId" element={ <Return /> } />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

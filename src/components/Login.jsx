@@ -67,15 +67,17 @@ const Login = () => {
                         setSession(true);
                         setLoggedInOut(true);
                     } else {
+                        // Si on récupère une erreur, on s'assure de bien se déconnecter
                         setSession(false);
-                        setLoggedInOut(true);
+                        setLoggedInOut(false);
                         setErrorType(0);
                         setErrorMessage(data.error);
                     }
                 });
             } catch (error) {
+                // Si on récupère une erreur, on s'assure de bien se déconnecter
                 setSession(false);
-                setLoggedInOut(true);
+                setLoggedInOut(false);
                 setErrorType(0);
                 setErrorMessage(error.toString());
             }

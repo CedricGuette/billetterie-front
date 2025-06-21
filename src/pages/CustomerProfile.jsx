@@ -14,6 +14,7 @@ const CustomerProfile = () => {
     // On initialise le state pour stocker les informations de l'utilisateur et les tickets
     const [user, setUser] = useState([]);
     const [tickets, setTickets] = useState([])
+    const [ ticketIsPayed, setTicketIsPayed ] = useState(false);
 
     // On initialise le state pour afficher le paiement
     const [ pay, setPay ] = useState(false);
@@ -47,6 +48,36 @@ const CustomerProfile = () => {
                 if(requestIsOk === true) {
                     setUser(data)
                     setTickets(data.tickets);
+
+                    // On vérifie si l'utilisateur a des tickets non payés avec une session en cours
+                    data.tickets.forEach(ticket => {
+                        if(ticket.sessionId !== null && ticket.ticketIsPayed === false) {
+                            let requestIsOk = false;
+
+                            fetch(process.env.REACT_APP_BACKEND_URL +'/api/stripe/checkout/validation/' + ticket.id, {
+                                method: 'GET',
+                                headers : { 
+                                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
+                            }})
+                            .then((response) => {
+                                if(response.ok === true) {
+                                    requestIsOk = true;
+                                }
+                                return response.json()
+                            })
+                            .then((data) => {
+                                if(requestIsOk === true) {
+                                    // Si le ticket est payé, on met à jour le profil de l'utilisateur
+                                    setErrorType(2);
+                                    setErrorMessage(data.checkoutStatus)
+                                    setTicketIsPayed(true);
+                                } else {
+                                    setErrorType(0);
+                                    setErrorMessage(data.error)
+                                }
+                            })
+                        }
+                    });
                 } else {
                     setErrorType(0);
                     setErrorMessage(data.error);
@@ -57,7 +88,7 @@ const CustomerProfile = () => {
                 setErrorType(0);
                 setErrorMessage(error.toString());
             });
-    }, [setErrorMessage, setErrorType]);
+    }, [setErrorMessage, setErrorType, ticketIsPayed]);
 
     // Fonction pour passer au paiement
     const handleClickPay = (ticketIdFromRequest) => (e) => {
@@ -124,7 +155,7 @@ const CustomerProfile = () => {
                                     <td>
                                         {user.profileIsValidate ? "" : "Profil en attente de validation" }
                                         {user.profileIsValidate && !ticket.ticketIsPayed ? <button onClick={handleClickPay(ticket.id)} className="paybutton"> Procéder au paiement</button> : ""}
-                                        { ticket.ticketIsPayed ? transformToDate(ticket.ticketCreatedDate) : ""}
+                                        { ticket.ticketIsPayed || ticketIsPayed ? transformToDate(ticket.ticketCreatedDate) : ""}
                                     </td>
                                     <td>
                                         {ticket.ticketIsPayed ? <PdfReader pdfUrl={ ticket.ticketUrl } /> : " non payé(s)"}

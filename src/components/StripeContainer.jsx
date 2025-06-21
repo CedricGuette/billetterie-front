@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 import { CheckoutProvider } from "@stripe/react-stripe-js";
 import CheckoutForm from "./stripe/CheckoutForm";
+import { ErrorPanelContext } from "../contexts/ErrorPanelProvider";
 
 const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
 const stripe = loadStripe(PUBLIC_KEY);
@@ -14,16 +15,31 @@ const stripe = loadStripe(PUBLIC_KEY);
  */
 const StripeContainer = ({ ticketId, user }) => {
 
+    const { setErrorMessage, setErrorType } = useContext(ErrorPanelContext);
+
     // Requête pour créer une session de paiement stripe
     const fetchClientSecret = () => {
+
+        let requestIsOk = false;
 
         return fetch(process.env.REACT_APP_BACKEND_URL +'/api/stripe/checkout/' + ticketId, {
             method: 'POST',
             headers : { 
                 "Authorization": "Bearer " + JSON.parse(localStorage.getItem('SESSION')).value,
             }})
-            .then((response) => response.json())
-            .then((json) => json.checkoutSessionClientSecret)
+            .then((response) => {
+                if(response.ok === true) {
+                    requestIsOk = true;
+                }
+                return response.json()})
+            .then((data) => {
+                if(requestIsOk === true){
+                    return data.checkoutSessionClientSecret
+                } else {
+                    setErrorType(0);
+                    setErrorMessage(data.error);
+                }
+            })
         };
     return(
         <CheckoutProvider stripe={stripe} options={{fetchClientSecret}}>
